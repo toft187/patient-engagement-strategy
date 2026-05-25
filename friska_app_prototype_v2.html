@@ -1,0 +1,4137 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Friska — App Prototype v2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=satoshi@500,700,900,501,701,901&display=swap" rel="stylesheet">
+<style>
+:root {
+  --longevity-red: #D2022C;
+  --longevity-red-dark: #A50122;
+  --perpetuity-black: #0B051D;
+  --skin-beige: #F6E7E3;
+  --skin-beige-deep: #FBD5CB;
+  --white: #FFFFFF;
+  --gray-50: #FAFAFA;
+  --gray-100: #F2F2F4;
+  --gray-200: #E6E6EA;
+  --gray-300: #D4D4DA;
+  --gray-400: #9A9AA3;
+  --gray-600: #56565E;
+  --gray-800: #2C2C33;
+  --success-green: #1F7A4D;
+  --satoshi: 'Satoshi', -apple-system, BlinkMacSystemFont, sans-serif;
+  --inter: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--inter);
+  background: #EDEDEF;
+  color: var(--perpetuity-black);
+  min-height: 100vh;
+  padding: 40px 20px;
+}
+
+/* Stage */
+.stage { max-width: 1400px; margin: 0 auto; }
+.stage-header { text-align: center; margin-bottom: 28px; }
+.stage-header .brand {
+  font-family: var(--satoshi);
+  font-weight: 900;
+  font-size: 28px;
+  color: var(--longevity-red);
+  letter-spacing: -0.02em;
+}
+.stage-header h1 {
+  font-family: var(--satoshi);
+  font-weight: 700;
+  font-size: 28px;
+  letter-spacing: -0.02em;
+  margin-top: 4px;
+}
+.stage-header p {
+  color: var(--gray-600);
+  margin-top: 8px;
+  font-size: 14px;
+}
+
+/* Flow indicator */
+.flow-indicator {
+  margin-bottom: 18px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+.flow-pill {
+  background: white;
+  border: 1px solid var(--gray-200);
+  border-radius: 100px;
+  padding: 6px 14px;
+  font-family: var(--inter);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--gray-600);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.flow-pill:hover {
+  border-color: var(--longevity-red);
+  color: var(--longevity-red);
+}
+.flow-pill.active {
+  background: var(--longevity-red);
+  border-color: var(--longevity-red);
+  color: white;
+}
+.reset-btn {
+  background: white;
+  border: 1px solid var(--gray-200);
+  border-radius: 100px;
+  padding: 6px 14px 6px 10px;
+  font-family: var(--inter);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--gray-600);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.reset-btn:hover {
+  border-color: var(--longevity-red);
+  color: var(--longevity-red);
+}
+.reset-btn svg { width: 14px; height: 14px; }
+.flow-help {
+  text-align: center;
+  margin-bottom: 24px;
+  font-family: var(--inter);
+  font-size: 12px;
+  color: var(--gray-400);
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.5;
+}
+
+/* Phone */
+.phone-row {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+.phone-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+.phone-label {
+  font-family: var(--inter);
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gray-400);
+}
+.iphone {
+  width: 390px;
+  height: 844px;
+  background: var(--perpetuity-black);
+  border-radius: 55px;
+  padding: 12px;
+  position: relative;
+  box-shadow:
+    0 0 0 2px #1a1525,
+    0 40px 80px -20px rgba(11, 5, 29, 0.4),
+    0 20px 40px -20px rgba(11, 5, 29, 0.2);
+}
+.iphone-screen {
+  width: 100%;
+  height: 100%;
+  background: var(--white);
+  border-radius: 44px;
+  overflow: hidden;
+  position: relative;
+}
+.ios-notch {
+  position: absolute;
+  top: 11px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 35px;
+  background: var(--perpetuity-black);
+  border-radius: 20px;
+  z-index: 50;
+}
+.ios-status-bar {
+  height: 54px;
+  padding: 18px 32px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  font-family: var(--inter);
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--perpetuity-black);
+  position: relative;
+  z-index: 10;
+}
+.ios-status-right { display: flex; gap: 5px; align-items: center; }
+.home-indicator {
+  position: absolute;
+  bottom: 8px; left: 50%;
+  transform: translateX(-50%);
+  width: 134px; height: 5px;
+  background: var(--perpetuity-black);
+  border-radius: 3px;
+  opacity: 0.9;
+  z-index: 30;
+}
+
+/* Screens */
+.screens-stack {
+  position: absolute;
+  top: 54px;
+  left: 0; right: 0; bottom: 0;
+  overflow: hidden;
+}
+.screen {
+  position: absolute;
+  inset: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: var(--white);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease;
+  transform: translateX(100%);
+  opacity: 0;
+  pointer-events: none;
+}
+.screen.active {
+  transform: translateX(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+.screen.exiting {
+  transform: translateX(-30%);
+  opacity: 0;
+}
+.screen.modal { transform: translateY(100%); }
+.screen.modal.active { transform: translateY(0); }
+.screen.modal.exiting { transform: translateY(100%); opacity: 1; }
+.screen::-webkit-scrollbar { display: none; }
+.screen { scrollbar-width: none; }
+.screen-content {
+  padding: 0 20px 100px;
+  min-height: 100%;
+}
+
+/* Top bar */
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0 14px;
+}
+.top-bar-back, .top-bar-action {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: var(--gray-100);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--perpetuity-black);
+  cursor: pointer;
+  border: none;
+  flex-shrink: 0;
+}
+.top-bar-back:active, .top-bar-action:active { transform: scale(0.94); }
+.top-bar-title {
+  font-family: var(--satoshi);
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: -0.01em;
+}
+.top-bar-spacer { width: 36px; }
+
+/* Greeting + inbox */
+.greeting-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0 6px;
+}
+.greet-text .day {
+  font-family: var(--inter);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--gray-400);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.greet-text .name {
+  font-family: var(--satoshi);
+  font-weight: 700;
+  font-size: 22px;
+  letter-spacing: -0.02em;
+  margin-top: 2px;
+}
+.top-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.inbox-icon-btn {
+  position: relative;
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: var(--gray-100);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--perpetuity-black);
+  cursor: pointer;
+}
+.inbox-icon-btn:active { transform: scale(0.94); }
+.inbox-icon-btn .badge {
+  position: absolute;
+  top: 2px; right: 2px;
+  background: var(--longevity-red);
+  color: white;
+  font-size: 9px;
+  font-weight: 700;
+  min-width: 16px;
+  height: 16px;
+  border-radius: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  border: 2px solid white;
+  font-family: var(--inter);
+}
+.avatar {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #F6E7E3, #E8C5BD);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--satoshi); font-weight: 700;
+  color: var(--longevity-red); font-size: 15px;
+  border: 2px solid var(--white);
+  box-shadow: 0 2px 8px rgba(11, 5, 29, 0.06);
+  cursor: pointer;
+}
+
+/* Section heading */
+.section-h {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin: 22px 0 10px;
+}
+.section-h h2 {
+  font-family: var(--satoshi);
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: -0.01em;
+}
+.section-h .link {
+  font-family: var(--inter);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--longevity-red);
+  cursor: pointer;
+}
+
+/* Today block (Hem) */
+.today-block {
+  background: linear-gradient(135deg, var(--skin-beige) 0%, #FCEFE9 100%);
+  border-radius: 22px;
+  padding: 18px 18px 14px;
+  margin-top: 6px;
+  position: relative;
+  overflow: hidden;
+}
+.today-block .corner-icon {
+  position: absolute;
+  top: 14px; right: 14px;
+  width: 28px; height: 28px;
+  color: var(--longevity-red);
+  opacity: 0.85;
+}
+.today-tag {
+  font-family: var(--inter);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--longevity-red);
+}
+.today-title {
+  font-family: var(--satoshi);
+  font-weight: 700;
+  font-size: 22px;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin-top: 4px;
+}
+.today-list {
+  margin-top: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Habit cards */
+.habit-card {
+  background: var(--white);
+  border-radius: 14px;
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+}
+.habit-card:active { transform: scale(0.98); }
+.habit-icon-sm {
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  background: var(--skin-beige);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--longevity-red);
+  flex-shrink: 0;
+}
+.habit-body { flex: 1; min-width: 0; }
+.habit-name {
+  font-family: var(--satoshi);
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 1.2;
+}
+.habit-time {
+  font-family: var(--inter);
+  font-size: 11px;
+  color: var(--gray-600);
+  margin-top: 2px;
+}
+.habit-add-btn {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: var(--longevity-red);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(210, 2, 44, 0.3);
+}
+.habit-add-btn:active { transform: scale(0.9); }
+
+/* Preparation block */
+.prep-block {
+  background: linear-gradient(135deg, #FFF1ED 0%, #FFD9CC 100%);
+  border-radius: 22px;
+  padding: 18px;
+  margin-top: 14px;
+}
+.prep-tag {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--inter);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--longevity-red);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.prep-tag-dot {
+  width: 6px; height: 6px;
+  background: var(--longevity-red);
+  border-radius: 50%;
+}
+.prep-title {
+  font-family: var(--satoshi);
+  font-weight: 700;
+  font-size: 17px;
+  letter-spacing: -0.01em;
+  margin-top: 4px;
+}
+.prep-meta {
+  font-family: var(--inter);
+  font-size: 12px;
+  color: var(--gray-600);
+  margin-top: 4px;
+}
+.prep-list {
+  margin-top: 14px;
+  background: white;
+  border-radius: 14px;
+  padding: 4px 0;
+}
+.prep-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  cursor: pointer;
+}
+.prep-item-body { flex: 1; }
+.prep-item-name {
+  font-family: var(--satoshi);
+  font-weight: 700;
+  font-size: 13.5px;
+}
+.prep-item-progress {
+  font-family: var(--inter);
+  font-size: 11px;
+  color: var(--gray-600);
+  margin-top: 2px;
+}
+.prep-item-arrow { color: var(--gray-300); }
+
+/* Insight card */
+.insight-card {
+  background: var(--perpetuity-black);
+  border-radius: 22px;
+  padding: 20px;
+  color: white;
+  position: relative;
+  overflow: hidden;
+  margin-top: 14px;
+}
+.insight-card::before {
+  content: '';
+  position: absolute;
+  top: -40px; right: -40px;
+  width: 160px; height: 160px;
+  background: radial-gradient(circle, rgba(210, 2, 44, 0.35) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.insight-tag {
+  font-family: var(--inter);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--skin-beige);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  position: relative;
+  z-index: 1;
+}
+.insight-tag-dot {
+  width: 6px; height: 6px;
+  background: var(--longevity-red);
+  border-radius: 50%;
+  box-shadow: 0 0 0 3px rgba(210, 2, 44, 0.25);
+}
+.insight-title {
+  font-family: var(--satoshi);
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+  margin-top: 8px;
+  position: relative;
+  z-index: 1;
+}
+.insight-title em { font-style: italic; color: var(--skin-beige); }
+.insight-body {
+  font-size: 13px;
+  line-height: 1.5;
+  color: rgba(246, 231, 227, 0.85);
+  margin-top: 8px;
+  position: relative;
+  z-index: 1;
+}
+.insight-body strong { color: white; font-weight: 600; }
+.insight-cta {
+  margin-top: 14px;
+  background: white;
+  color: var(--perpetuity-black);
+  border: none;
+  padding: 10px 16px;
+  border-radius: 100px;
+  font-family: var(--inter);
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Tab bar with circular plus on right */
+.tab-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0; right: 0;
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid var(--gray-200);
+  padding: 10px 16px 28px;
+  display: flex;
+  align-items: center;
+  z-index: 40;
+  gap: 4px;
+}
+.tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  color: var(--gray-400);
+  font-size: 10px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 4px 8px;
+  background: none;
+  border: none;
+  font-family: var(--inter);
+  flex: 1;
+  min-width: 0;
+}
+.tab.active { color: var(--longevity-red); }
+.tab svg { width: 22px; height: 22px; }
+
+.tab-plus {
+  flex: 0 0 auto;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--longevity-red);
+  color: white;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(210, 2, 44, 0.35);
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  margin-top: -16px;
+  margin-left: 4px;
+}
+.tab-plus:active { transform: scale(0.92); }
+.tab-plus.open { transform: rotate(135deg); }
+.tab-plus svg { width: 22px; height: 22px; }
+
+/* Plus speed dial */
+.plus-options-wrap {
+  position: absolute;
+  bottom: 90px;
+  right: 12px;
+  z-index: 35;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+  pointer-events: none;
+}
+.plus-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  opacity: 0;
+  transform: translateY(16px) scale(0.85);
+  transition: opacity 0.25s ease, transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  pointer-events: none;
+}
+.plus-options-wrap.open { pointer-events: auto; }
+.plus-options-wrap.open .plus-option {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+.plus-options-wrap.open .plus-option:nth-child(1) { transition-delay: 0.12s; }
+.plus-options-wrap.open .plus-option:nth-child(2) { transition-delay: 0.07s; }
+.plus-options-wrap.open .plus-option:nth-child(3) { transition-delay: 0.02s; }
+.plus-option-label {
+  background: var(--perpetuity-black);
+  color: white;
+  font-family: var(--inter);
+  font-weight: 500;
+  font-size: 12px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(11, 5, 29, 0.15);
+  opacity: 0;
+  transform: translateX(8px);
+  transition: opacity 0.2s ease, transform 0.3s ease;
+}
+.plus-options-wrap.open .plus-option-label {
+  opacity: 1;
+  transform: translateX(0);
+}
+.plus-option-btn {
+  width: 44px; height: 44px;
+  border-radius: 14px;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--longevity-red);
+  box-shadow: 0 4px 14px rgba(11, 5, 29, 0.12);
+  border: 1px solid var(--gray-200);
+  cursor: pointer;
+}
+.plus-option-btn svg { width: 20px; height: 20px; }
+.plus-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(11, 5, 29, 0);
+  pointer-events: none;
+  transition: background 0.25s ease;
+  z-index: 32;
+}
+.plus-backdrop.active {
+  background: rgba(11, 5, 29, 0.25);
+  pointer-events: auto;
+}
+
+/* Health hero */
+.health-hero {
+  background: linear-gradient(135deg, var(--skin-beige) 0%, var(--skin-beige-deep) 100%);
+  border-radius: 22px;
+  padding: 18px 20px 20px;
+  margin-top: 6px;
+}
+.health-hero-tag {
+  font-family: var(--inter);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--longevity-red);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.health-hero-row {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-top: 6px;
+}
+.health-hero-value {
+  font-family: var(--satoshi);
+  font-weight: 900;
+  font-size: 38px;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+.health-hero-unit {
+  font-family: var(--inter);
+  font-size: 13px;
+  color: var(--gray-600);
+  font-weight: 500;
+}
+.health-hero-delta {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--longevity-red);
+  color: white;
+  padding: 3px 8px;
+  border-radius: 100px;
+  font-family: var(--satoshi);
+  font-weight: 700;
+  font-size: 11px;
+  margin-top: 8px;
+}
+.health-context {
+  font-family: var(--inter);
+  font-size: 12px;
+  color: var(--gray-600);
+  margin-top: 10px;
+  line-height: 1.4;
+}
+.chart-card {
+  margin-top: 12px;
+  padding: 16px 18px 12px;
+  background: white;
+  border: 1px solid var(--gray-200);
+  border-radius: 18px;
+  position: relative;
+}
+.chart-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.chart-title {
+  font-family: var(--satoshi);
+  font-weight: 700;
+  font-size: 14px;
+}
+.chart-svg {
+  width: 100%;
+  height: 110px;
+  display: block;
+}
+.chart-watermark {
+  position: absolute;
+  bottom: 8px;
+  right: 14px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.chart-watermark .friska-mark {
+  font-family: var(--satoshi);
+  font-weight: 900;
+  font-size: 10px;
+  color: var(--longevity-red);
+  letter-spacing: -0.02em;
+}
+.chart-watermark .via {
+  font-family: var(--inter);
+  font-size: 9px;
+  color: var(--gray-400);
+  font-weight: 500;
+}
+.stat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 10px;
+}
+.stat-tile {
+  padding: 12px;
+  background: white;
+  border: 1px solid var(--gray-200);
+  border-radius: 14px;
+}
+.stat-tile-label {
+  font-family: var(--inter);
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--gray-400);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.stat-tile-value {
+  font-family: var(--satoshi);
+  font-weight: 700;
+  font-size: 17px;
+  letter-spacing: -0.02em;
+  margin-top: 4px;
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+.stat-tile-value .unit {
+  font-family: var(--inter);
+  font-size: 10px;
+  color: var(--gray-400);
+  font-weight: 500;
+}
+
+/* Chats list */
+.chat-section { margin-top: 16px; }
+.chat-section-h {
+  font-family: var(--inter);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--gray-400);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  padding: 0 4px;
+}
+.chat-row {
+  display: flex;
+  gap: 12px;
+  padding: 12px 8px;
+  border-radius: 14px;
+  cursor: pointer;
+  align-items: center;
+}
+.chat-row:hover { background: var(--gray-50); }
+.chat-avatar {
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--satoshi);
+  font-weight: 700;
+  color: white;
+  font-size: 16px;
+}
+.chat-avatar.ai {
+  background: var(--perpetuity-black);
+  color: var(--skin-beige);
+}
+.chat-avatar.nurse { background: linear-gradient(135deg, #4A6FB8, #2B4A8F); }
+.chat-avatar.doctor { background: linear-gradient(135deg, #1F7A4D, #155233); }
+.chat-body { flex: 1; min-width: 0; }
+.chat-name-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+.chat-name {
+  font-family: var(--satoshi);
+  font-weight: 700;
+  font-size: 14px;
+}
+.chat-time {
+  font-family: var(--inter);
+  font-size: 11px;
+  color: var(--gray-400);
+}
+.chat-preview {
+  font-family: var(--inter);
+  font-size: 12.5px;
+  color: var(--gray-600);
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.chat-row.unread .chat-name { font-weight: 700; }
+.chat-row.unread .chat-preview { color: var(--perpetuity-black); font-weight: 500; }
+.chat-unread-dot {
+  width: 8px; height: 8px;
+  background: var(--longevity-red);
+  border-radius: 50%;
+  margin-left: 8px;
+  flex-shrink: 0;
+}
+
+/* Chat view */
+.chat-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0 14px;
+  border-bottom: 1px solid var(--gray-100);
+  margin-bottom: 14px;
+}
+.chat-header-back {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: var(--gray-100);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--perpetuity-black);
+  border: none;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.chat-header-info {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.chat-header-avatar {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--satoshi); font-weight: 700; color: white;
+  font-size: 13px;
+}
+.chat-header-name {
+  font-family: var(--satoshi);
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 1.1;
+}
+.chat-header-role {
+  font-family: var(--inter);
+  font-size: 11px;
+  color: var(--gray-600);
+}
+.chat-messages {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-bottom: 90px;
+}
+.chat-msg {
+  max-width: 80%;
+  padding: 10px 14px;
+  border-radius: 16px;
+  font-family: var(--inter);
+  font-size: 13.5px;
+  line-height: 1.4;
+}
+.chat-msg.them {
+  background: var(--gray-100);
+  color: var(--perpetuity-black);
+  align-self: flex-start;
+  border-bottom-left-radius: 4px;
+}
+.chat-msg.them.ai {
+  background: var(--perpetuity-black);
+  color: white;
+}
+.chat-msg.me {
+  background: var(--longevity-red);
+  color: white;
+  align-self: flex-end;
+  border-bottom-right-radius: 4px;
+}
+.chat-msg-time {
+  font-family: var(--inter);
+  font-size: 10px;
+  color: var(--gray-400);
+  align-self: flex-start;
+  padding: 0 4px;
+}
+.chat-msg.me + .chat-msg-time { align-self: flex-end; }
+.chat-context-card {
+  align-self: stretch;
+  background: var(--skin-beige);
+  border-radius: 14px;
+  padding: 12px 14px;
+  margin: 4px 0;
+}
+.chat-context-tag {
+  font-family: var(--inter);
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--longevity-red);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.chat-context-text {
+  font-family: var(--inter);
+  font-size: 12px;
+  color: var(--perpetuity-black);
+  margin-top: 4px;
+  line-height: 1.4;
+}
+.library-card-mini {
+  align-self: stretch;
+  background: white;
+  border: 1px solid var(--gray-200);
+  border-radius: 14px;
+  padding: 0;
+  cursor: pointer;
+  overflow: hidden;
+}
+.library-card-mini:hover {
+  border-color: var(--longevity-red);
+}
+.library-card-mini-image {
+  height: 90px;
+  position: relative;
+}
+.library-card-mini-image.recipe {
+  background: linear-gradient(135deg, #F4A261 0%, #E76F51 100%);
+}
+.library-card-mini-image.article {
+  background: linear-gradient(135deg, #8FB569 0%, #4A7A3E 100%);
+}
+.library-card-mini-type {
+  position: absolute;
+  top: 8px; left: 10px;
+  background: rgba(11, 5, 29, 0.7);
+  backdrop-filter: blur(10px);
+  color: white;
+  padding: 3px 8px;
+  border-radius: 100px;
+  font-family: var(--inter);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.library-card-mini-body { padding: 10px 12px 12px; }
+.library-card-mini-title {
+  font-family: var(--satoshi);
+  font-weight: 700;
+  font-size: 13px;
+  line-height: 1.2;
+}
+.library-card-mini-meta {
+  font-family: var(--inter);
+  font-size: 11px;
+  color: var(--gray-600);
+  margin-top: 3px;
+}
+
+.chat-input-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0; right: 0;
+  background: white;
+  border-top: 1px solid var(--gray-100);
+  padding: 12px 16px 28px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  z-index: 40;
+}
+.chat-input {
+  flex: 1;
+  background: var(--gray-100);
+  border: none;
+  border-radius: 100px;
+  padding: 11px 16px;
+  font-family: var(--inter);
+  font-size: 13px;
+  outline: none;
+}
+.chat-send-btn {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: var(--longevity-red);
+  color: white;
+  border: none;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(210, 2, 44, 0.3);
+}
+
+/* Inbox sheet */
+.inbox-sheet-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(11, 5, 29, 0.4);
+  z-index: 60;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s;
+}
+.inbox-sheet-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+.inbox-sheet {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  background: white;
+  z-index: 61;
+  transform: translateX(100%);
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow-y: auto;
+}
+.inbox-sheet.active { transform: translateX(0); }
+.inbox-row {
+  display: flex;
+  gap: 12px;
+  padding: 14px 12px;
+  border-radius: 14px;
+  cursor: pointer;
+  align-items: flex-start;
+  margin-bottom: 4px;
+}
+.inbox-row.unread { background: rgba(210, 2, 44, 0.04); }
+.inbox-icon {
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  background: var(--gray-100);
+  color: var(--longevity-red);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.inbox-icon.suggested { background: var(--skin-beige); }
+.inbox-icon.lab {
+  background: rgba(31, 122, 77, 0.1);
+  color: var(--success-green);
+}
+.inbox-body { flex: 1; min-width: 0; }
+.inbox-row-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+.inbox-from {
+  font-family: var(--inter);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--gray-400);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.inbox-time {
+  font-family: var(--inter);
+  font-size: 10px;
+  color: var(--gray-400);
+}
+.inbox-title {
+  font-family: var(--satoshi);
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 1.2;
+  margin-top: 3px;
+}
+.inbox-preview {
+  font-family: var(--inter);
+  font-size: 12px;
+  color: var(--gray-600);
+  line-height: 1.4;
+  margin-top: 3px;
+}
+.inbox-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+.inbox-action-btn {
+  padding: 6px 12px;
+  border-radius: 100px;
+  font-family: var(--inter);
+  font-size: 11px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+}
+.inbox-action-btn.primary {
+  background: var(--longevity-red);
+  color: white;
+}
+.inbox-action-btn.secondary {
+  background: var(--gray-100);
+  color: var(--perpetuity-black);
+}
+
+/* Library */
+.library-search {
+  margin-top: 12px;
+  background: var(--gray-100);
+  border-radius: 14px;
+  padding: 11px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--gray-400);
+  font-family: var(--inter);
+  font-size: 13.5px;
+  cursor: pointer;
+}
+.program-progress-card {
+  margin-top: 18px;
+  background: var(--perpetuity-black);
+  border-radius: 22px;
+  padding: 18px;
+  color: white;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+.program-progress-card::before {
+  content: '';
+  position: absolute;
+  top: -40px; right: -40px;
+  width: 160px; height: 160px;
+  background: radial-gradient(circle, rgba(210, 2, 44, 0.3) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.program-progress-card .pp-tag {
+  font-family: var(--inter);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--skin-beige);
+  position: relative;
+  z-index: 1;
+}
+.program-progress-card .pp-title {
+  font-family: var(--satoshi);
+  font-weight: 700;
+  font-size: 19px;
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+  margin-top: 6px;
+  position: relative;
+  z-index: 1;
+}
+.program-progress-card .pp-meta {
+  font-family: var(--inter);
+  font-size: 12px;
+  color: rgba(246, 231, 227, 0.7);
+  margin-top: 6px;
+  position: relative;
+  z-index: 1;
+}
+.program-progress-track {
+  margin-top: 14px;
+  height: 6px;
+  background: rgba(246, 231, 227, 0.15);
+  border-radius: 100px;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+}
+.program-progress-fill {
+  height: 100%;
+  background: var(--longevity-red);
+  border-radius: 100px;
+}
+.library-categories {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 18px;
+}
+.lib-category {
+  padding: 16px;
+  border-radius: 16px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.lib-category.programs {
+  background: linear-gradient(135deg, #F6E7E3 0%, #FBD5CB 100%);
+}
+.lib-category.recipes {
+  background: linear-gradient(135deg, #FFF0E0 0%, #F8D8B0 100%);
+}
+.lib-category.exercises {
+  background: linear-gradient(135deg, #E5EBF5 0%, #BCD0EA 100%);
+}
+.lib-category.articles {
+  background: linear-gradient(135deg, #E5F2EA 0%, #B8DCC4 100%);
+}
+.lib-category-icon {
+  width: 32px;
+  height: 32px;
+  color: var(--perpetuity-black);
+  margin-bottom: 8px;
+}
+.lib-category-name {
+  font-family: var(--satoshi);
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: -0.01em;
+}
+.lib-category-count {
+  font-family: var(--inter);
+  font-size: 11px;
+  color: var(--gray-600);
+  margin-top: 2px;
+}
+.lib-section { margin-top: 24px; }
+.lib-row-scroll {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding: 4px 0 8px;
+  margin-left: -20px;
+  margin-right: -20px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+.lib-row-scroll::-webkit-scrollbar { display: none; }
+.lib-row-scroll { scrollbar-width: none; }
+.lib-card {
+  flex-shrink: 0;
+  width: 200px;
+  background: white;
+  border: 1px solid var(--gray-200);
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+}
+.lib-card-image {
+  height: 110px;
+  position: relative;
+}
+.lib-card-image.recipe-1 { background: linear-gradient(135deg, #F4A261 0%, #E76F51 100%); }
+.lib-card-image.recipe-2 { background: linear-gradient(135deg, #E9C46A 0%, #D4A017 100%); }
+.lib-card-image.recipe-3 { background: linear-gradient(135deg, #C5D97B 0%, #8FB560 100%); }
+.lib-card-image.exercise-1 { background: linear-gradient(135deg, #4A6FB8 0%, #2B4A8F 100%); }
+.lib-card-image.article-1 { background: linear-gradient(135deg, #8FB569 0%, #4A7A3E 100%); }
+.lib-card-image.article-2 { background: linear-gradient(135deg, #E9C46A 0%, #B58A1F 100%); }
+.lib-type-pill {
+  position: absolute;
+  top: 10px; left: 10px;
+  background: rgba(11, 5, 29, 0.75);
+  backdrop-filter: blur(10px);
+  color: white;
+  padding: 3px 8px;
+  border-radius: 100px;
+  font-family: var(--inter);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.lib-card-body { padding: 12px; }
+.lib-card-title {
+  font-family: var(--satoshi);
+  font-weight: 700;
+  font-size: 13.5px;
+  line-height: 1.2;
+}
+.lib-card-meta {
+  font-family: var(--inter);
+  font-size: 11px;
+  color: var(--gray-600);
+  margin-top: 4px;
+}
+
+/* Program detail */
+.program-hero {
+  height: 200px;
+  background: linear-gradient(135deg, var(--skin-beige) 0%, var(--skin-beige-deep) 100%);
+  border-radius: 0 0 28px 28px;
+  margin: 0 -20px;
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+}
+.program-hero::before {
+  content: '';
+  position: absolute;
+  top: -60px; right: -60px;
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(210, 2, 44, 0.15) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.program-hero-top {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  z-index: 1;
+}
+.program-hero-bottom {
+  position: relative;
+  z-index: 1;
+}
+.program-hero-tag {
+  font-family: var(--inter);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--longevity-red);
+}
+.program-hero-title {
+  font-family: var(--satoshi);
+  font-weight: 700;
+  font-size: 24px;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin-top: 6px;
+  color: var(--perpetuity-black);
+}
+.program-hero-meta {
+  font-family: var(--inter);
+  font-size: 12px;
+  color: var(--gray-600);
+  margin-top: 6px;
+}
+.program-section-list {
+  margin-top: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.program-section-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px;
+  background: white;
+  border: 1px solid var(--gray-200);
+  border-radius: 14px;
+  cursor: pointer;
+}
+.program-section-card.completed {
+  background: var(--gray-50);
+  border-color: transparent;
+}
+.program-section-card.completed .ps-title {
+  color: var(--gray-600);
+}
+.program-section-num {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: var(--longevity-red);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--satoshi);
+  font-weight: 700;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+.program-section-card.completed .program-section-num {
+  background: var(--success-green);
+}
+.program-section-card.locked .program-section-num {
+  background: var(--gray-200);
+  color: var(--gray-400);
+}
+.program-section-card.locked .ps-title {
+  color: var(--gray-400);
+}
+.ps-body { flex: 1; min-width: 0; }
+.ps-title {
+  font-family: var(--satoshi);
+  font-weight: 700;
+  font-size: 14px;
+}
+.ps-meta {
+  font-family: var(--inter);
+  font-size: 11px;
+  color: var(--gray-600);
+  margin-top: 2px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.ps-type-pill {
+  background: var(--gray-100);
+  padding: 2px 7px;
+  border-radius: 100px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--gray-600);
+}
+.ps-arrow { color: var(--gray-300); flex-shrink: 0; }
+
+/* Article detail */
+.article-hero-image {
+  height: 220px;
+  background: linear-gradient(135deg, #8FB569 0%, #4A7A3E 100%);
+  margin: 0 -20px;
+  border-radius: 0 0 28px 28px;
+  position: relative;
+  overflow: hidden;
+}
+.article-hero-image::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 50%, rgba(11,5,29,0.4) 100%);
+}
+.article-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 18px;
+  font-family: var(--inter);
+  font-size: 11px;
+  color: var(--gray-600);
+}
+.article-meta-row .type-pill {
+  background: var(--skin-beige);
+  color: var(--longevity-red);
+  padding: 3px 8px;
+  border-radius: 100px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 9px;
+}
+.article-title {
+  font-family: var(--satoshi);
+  font-weight: 700;
+  font-size: 24px;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin-top: 12px;
+}
+.article-lead {
+  font-family: var(--inter);
+  font-size: 14px;
+  color: var(--gray-600);
+  line-height: 1.6;
+  margin-top: 10px;
+}
+.article-body p {
+  font-family: var(--inter);
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--perpetuity-black);
+  margin-top: 14px;
+}
+.article-body h3 {
+  font-family: var(--satoshi);
+  font-weight: 700;
+  font-size: 17px;
+  letter-spacing: -0.01em;
+  margin-top: 22px;
+}
+.article-mark-done {
+  margin-top: 28px;
+  width: 100%;
+  padding: 14px;
+  background: var(--longevity-red);
+  color: white;
+  border: none;
+  border-radius: 14px;
+  font-family: var(--inter);
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(210, 2, 44, 0.25);
+}
+
+/* Upgrade flow */
+.upgrade-hero {
+  background: linear-gradient(135deg, #FFD9CC 0%, var(--skin-beige) 100%);
+  border-radius: 22px;
+  padding: 24px;
+  margin-top: 12px;
+  position: relative;
+  overflow: hidden;
+}
+.upgrade-hero::before {
+  content: '';
+  position: absolute;
+  top: -60px; right: -60px;
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(210, 2, 44, 0.2) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.upgrade-hero-tag {
+  font-family: var(--inter);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--longevity-red);
+  position: relative;
+  z-index: 1;
+}
+.upgrade-hero-title {
+  font-family: var(--satoshi);
+  font-weight: 700;
+  font-size: 24px;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin-top: 8px;
+  position: relative;
+  z-index: 1;
+}
+.upgrade-hero-title em { font-style: italic; color: var(--longevity-red); }
+.upgrade-hero-body {
+  font-family: var(--inter);
+  font-size: 13.5px;
+  color: var(--gray-800);
+  margin-top: 10px;
+  line-height: 1.5;
+  position: relative;
+  z-index: 1;
+}
+.upgrade-features {
+  margin-top: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.upgrade-feature {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+.upgrade-feature-check {
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  background: var(--longevity-red);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.upgrade-feature-check svg { width: 12px; height: 12px; }
+.upgrade-feature-body { flex: 1; }
+.upgrade-feature-name {
+  font-family: var(--satoshi);
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 1.3;
+}
+.upgrade-feature-desc {
+  font-family: var(--inter);
+  font-size: 12px;
+  color: var(--gray-600);
+  margin-top: 2px;
+  line-height: 1.4;
+}
+.upgrade-price-card {
+  margin-top: 22px;
+  padding: 18px;
+  background: var(--perpetuity-black);
+  color: white;
+  border-radius: 18px;
+  text-align: center;
+}
+.upgrade-price-tag {
+  font-family: var(--inter);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--skin-beige);
+}
+.upgrade-price-amount {
+  font-family: var(--satoshi);
+  font-weight: 900;
+  font-size: 42px;
+  letter-spacing: -0.025em;
+  line-height: 1;
+  margin-top: 4px;
+}
+.upgrade-price-amount span {
+  font-family: var(--inter);
+  font-size: 14px;
+  color: rgba(246, 231, 227, 0.7);
+  font-weight: 500;
+}
+.upgrade-price-compare {
+  font-family: var(--inter);
+  font-size: 11px;
+  color: rgba(246, 231, 227, 0.6);
+  margin-top: 6px;
+  line-height: 1.4;
+}
+.upgrade-cta {
+  margin-top: 14px;
+  width: 100%;
+  padding: 14px;
+  background: white;
+  color: var(--perpetuity-black);
+  border: none;
+  border-radius: 14px;
+  font-family: var(--inter);
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+}
+.conf-celebration {
+  text-align: center;
+  margin-top: 60px;
+}
+.conf-celebration-icon {
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  background: var(--longevity-red);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  box-shadow: 0 10px 30px rgba(210, 2, 44, 0.35);
+}
+.conf-celebration-title {
+  font-family: var(--satoshi);
+  font-weight: 700;
+  font-size: 26px;
+  letter-spacing: -0.02em;
+  margin-top: 22px;
+  line-height: 1.15;
+}
+.conf-celebration-title em { font-style: italic; color: var(--longevity-red); }
+.conf-celebration-body {
+  font-family: var(--inter);
+  font-size: 14px;
+  color: var(--gray-600);
+  margin-top: 10px;
+  line-height: 1.5;
+}
+.conf-team {
+  margin-top: 32px;
+  padding: 20px;
+  background: var(--gray-50);
+  border-radius: 18px;
+}
+.conf-team-title {
+  font-family: var(--inter);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--gray-400);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-align: center;
+}
+.conf-team-row {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin-top: 14px;
+}
+.conf-team-member {
+  text-align: center;
+}
+.conf-team-avatar {
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-family: var(--satoshi);
+  font-weight: 700;
+  font-size: 16px;
+}
+.conf-team-name {
+  font-family: var(--satoshi);
+  font-weight: 700;
+  font-size: 12px;
+  margin-top: 6px;
+}
+.conf-team-role {
+  font-family: var(--inter);
+  font-size: 10px;
+  color: var(--gray-600);
+  margin-top: 2px;
+}
+
+/* Toast */
+.toast {
+  position: absolute;
+  top: 70px; left: 20px; right: 20px;
+  background: var(--perpetuity-black);
+  color: white;
+  border-radius: 12px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 10px 30px rgba(11, 5, 29, 0.3);
+  z-index: 90;
+  transform: translateY(-200%);
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.toast.show { transform: translateY(0); }
+.toast-icon {
+  width: 26px; height: 26px;
+  background: var(--success-green);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.toast-text {
+  font-family: var(--inter);
+  font-size: 13px;
+  font-weight: 500;
+  flex: 1;
+}
+
+.btn-full-primary {
+  width: 100%;
+  padding: 16px;
+  background: var(--longevity-red);
+  color: white;
+  border: none;
+  border-radius: 16px;
+  font-family: var(--inter);
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(210, 2, 44, 0.25);
+}
+.btn-full-primary:active { transform: scale(0.98); }
+
+/* ============ Goal mini card on Home ============ */
+.goal-mini-card {
+  margin-top: 8px;
+  background: white;
+  border: 1px solid var(--gray-200);
+  border-radius: 14px;
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: transform 0.15s, border-color 0.15s;
+}
+.goal-mini-card:hover { border-color: var(--longevity-red); }
+.goal-mini-card:active { transform: scale(0.99); }
+.goal-mini-progress-ring {
+  position: relative;
+  width: 44px; height: 44px;
+  flex-shrink: 0;
+}
+.goal-mini-progress-ring svg {
+  width: 100%; height: 100%;
+  transform: rotate(-90deg);
+}
+.goal-mini-progress-ring .ring-bg {
+  fill: none;
+  stroke: var(--gray-100);
+  stroke-width: 4;
+}
+.goal-mini-progress-ring .ring-fill {
+  fill: none;
+  stroke: var(--longevity-red);
+  stroke-width: 4;
+  stroke-linecap: round;
+  transition: stroke-dasharray 0.5s ease;
+}
+.goal-mini-progress-text {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--satoshi);
+  font-weight: 700;
+  font-size: 11px;
+  color: var(--longevity-red);
+}
+.goal-mini-body { flex: 1; min-width: 0; }
+.goal-mini-tag {
+  font-family: var(--inter);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--gray-400);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.goal-mini-text {
+  font-family: var(--satoshi);
+  font-weight: 700;
+  font-size: 14px;
+  margin-top: 2px;
+}
+.goal-mini-text strong { color: var(--longevity-red); }
+.goal-mini-arrow { color: var(--gray-300); flex-shrink: 0; }
+
+/* ============ Daily compass cards on Home ============ */
+/* Daily compass row: two side-by-side cards */
+.daily-row {
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.daily-card {
+  background: white;
+  border: 1px solid var(--gray-200);
+  border-radius: 18px;
+  padding: 16px 12px 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: border-color 0.15s, transform 0.15s;
+}
+.daily-card:hover { border-color: var(--longevity-red); }
+.daily-card:active { transform: scale(0.99); }
+.daily-card .label {
+  font-family: var(--inter);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--longevity-red);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.daily-card .ring-wrap {
+  width: 100px; height: 100px;
+  position: relative;
+}
+.daily-card .ring-wrap svg {
+  width: 100%; height: 100%;
+  transform: rotate(-90deg);
+}
+.daily-card .ring-bg {
+  fill: none;
+  stroke: var(--gray-100);
+  stroke-width: 7;
+}
+.daily-card .ring-fg {
+  fill: none;
+  stroke: var(--longevity-red);
+  stroke-width: 7;
+  stroke-linecap: round;
+  transition: stroke-dasharray 0.6s ease;
+}
+.daily-card .ring-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  line-height: 1;
+}
+.daily-card .ring-val {
+  font-family: var(--satoshi);
+  font-weight: 900;
+  font-size: 20px;
+  letter-spacing: -0.02em;
+}
+.daily-card .ring-sub {
+  margin-top: 4px;
+  font-family: var(--inter);
+  font-size: 10px;
+  color: var(--gray-600);
+  font-weight: 500;
+}
+
+/* Nutrition: big kcal ring + 3 macro rows */
+.kcal-block {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.kcal-ring {
+  width: 90px; height: 90px;
+  position: relative;
+  flex-shrink: 0;
+}
+.kcal-ring svg {
+  width: 100%; height: 100%;
+  transform: rotate(-90deg);
+}
+.kcal-ring .ring-bg {
+  fill: none;
+  stroke: white;
+  stroke-width: 7;
+}
+.kcal-ring .ring-fg {
+  fill: none;
+  stroke: var(--longevity-red);
+  stroke-width: 7;
+  stroke-linecap: round;
+  transition: stroke-dasharray 0.6s ease;
+}
+.kcal-ring .ring-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.kcal-ring .ring-val {
+  font-family: var(--satoshi);
+  font-weight: 900;
+  font-size: 18px;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+.kcal-ring .ring-target {
+  margin-top: 3px;
+  font-family: var(--inter);
+  font-size: 10px;
+  color: var(--gray-600);
+  font-weight: 500;
+}
+.macro-rows {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+.macro-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-family: var(--inter);
+  font-size: 12px;
+}
+.macro-row .macro-name {
+  font-family: var(--satoshi);
+  font-weight: 700;
+  color: var(--perpetuity-black);
+}
+.macro-row .macro-val {
+  color: var(--gray-600);
+}
+.macro-row .macro-val strong {
+  font-family: var(--satoshi);
+  font-weight: 700;
+  color: var(--perpetuity-black);
+}
+.macro-row .macro-val.increase strong { color: var(--longevity-red); }
+.macro-row .macro-val.optimal strong { color: var(--success-green); }
+
+/* Nutrition compass: 5 gauges in a row */
+.nutrition-gauges {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+}
+.gauge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+}
+.gauge-arc {
+  width: 100%;
+  max-width: 56px;
+  aspect-ratio: 2 / 1;
+  position: relative;
+}
+.gauge-arc svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.gauge-arc .arc-bg {
+  fill: none;
+  stroke: white;
+  stroke-width: 6;
+  stroke-linecap: round;
+}
+.gauge-arc .arc-fg {
+  fill: none;
+  stroke-width: 6;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.6s ease;
+}
+.gauge-name {
+  margin-top: 6px;
+  font-family: var(--satoshi);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: -0.01em;
+  text-align: center;
+}
+.gauge-status {
+  margin-top: 2px;
+  font-family: var(--inter);
+  font-size: 10px;
+  color: var(--gray-600);
+  font-weight: 500;
+  text-align: center;
+}
+.gauge-status.optimal { color: var(--success-green); }
+.gauge-status.increase { color: var(--longevity-red); }
+.gauge-status.low { color: var(--gray-600); }
+
+/* Activity compass: 3 metrics in a row */
+.activity-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+.activity-metric {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+}
+.activity-ring {
+  width: 76px; height: 76px;
+  position: relative;
+  margin-bottom: 8px;
+}
+.activity-ring svg {
+  width: 100%; height: 100%;
+  transform: rotate(-90deg);
+}
+.activity-ring .ring-bg {
+  fill: none;
+  stroke: white;
+  stroke-width: 6;
+}
+.activity-ring .ring-fg {
+  fill: none;
+  stroke: var(--longevity-red);
+  stroke-width: 6;
+  stroke-linecap: round;
+  transition: stroke-dasharray 0.6s ease;
+}
+.activity-ring .ring-fg.green { stroke: var(--success-green); }
+.activity-ring .ring-icon {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--perpetuity-black);
+}
+.activity-name {
+  font-family: var(--satoshi);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: -0.01em;
+  text-align: center;
+}
+.activity-value {
+  margin-top: 2px;
+  font-family: var(--inter);
+  font-size: 11px;
+  color: var(--gray-600);
+  font-weight: 500;
+  text-align: center;
+}
+.activity-value strong {
+  font-family: var(--satoshi);
+  font-weight: 700;
+  color: var(--perpetuity-black);
+}
+
+/* "+ Lägg till rutin" button on Home */
+.add-habit-btn {
+  margin-top: 10px;
+  width: 100%;
+  background: white;
+  border: 1.5px dashed var(--gray-300);
+  border-radius: 14px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  font-family: var(--inter);
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--gray-600);
+  transition: all 0.15s;
+}
+.add-habit-btn:hover {
+  border-color: var(--longevity-red);
+  color: var(--longevity-red);
+}
+.add-habit-btn:active { transform: scale(0.98); }
+
+/* ============ Habit creation steps ============ */
+.step-progress {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 18px;
+}
+.step-bar {
+  flex: 1;
+  height: 4px;
+  background: var(--gray-200);
+  border-radius: 100px;
+  transition: background 0.3s;
+}
+.step-bar.active { background: var(--longevity-red); }
+
+.step-title {
+  font-family: var(--satoshi);
+  font-weight: 700;
+  font-size: 24px;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+.step-subtitle {
+  font-family: var(--inter);
+  font-size: 13px;
+  color: var(--gray-600);
+  margin-top: 6px;
+  line-height: 1.5;
+}
+
+/* Habit type templates */
+.template-list {
+  margin-top: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.template-card {
+  background: white;
+  border: 1.5px solid var(--gray-200);
+  border-radius: 14px;
+  padding: 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.template-card:hover {
+  border-color: var(--longevity-red);
+}
+.template-card.selected {
+  border-color: var(--longevity-red);
+  background: rgba(210, 2, 44, 0.03);
+}
+.template-icon {
+  width: 40px; height: 40px;
+  border-radius: 12px;
+  background: var(--skin-beige);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--longevity-red);
+  flex-shrink: 0;
+}
+.template-body { flex: 1; min-width: 0; }
+.template-name {
+  font-family: var(--satoshi);
+  font-weight: 700;
+  font-size: 14px;
+}
+.template-desc {
+  font-family: var(--inter);
+  font-size: 11.5px;
+  color: var(--gray-600);
+  margin-top: 2px;
+}
+.template-radio {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  border: 2px solid var(--gray-300);
+  flex-shrink: 0;
+  transition: all 0.2s;
+  position: relative;
+}
+.template-card.selected .template-radio {
+  border-color: var(--longevity-red);
+  background: var(--longevity-red);
+}
+.template-card.selected .template-radio::after {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  background: white;
+  border-radius: 50%;
+}
+
+.template-divider {
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid var(--gray-200);
+}
+
+/* Frequency / time chips */
+.chip-group-label {
+  font-family: var(--inter);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--gray-400);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-top: 22px;
+  margin-bottom: 10px;
+}
+.chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.chip {
+  padding: 9px 14px;
+  border-radius: 100px;
+  background: white;
+  border: 1.5px solid var(--gray-200);
+  font-family: var(--inter);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--perpetuity-black);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.chip:hover { border-color: var(--longevity-red); }
+.chip.selected {
+  background: var(--longevity-red);
+  border-color: var(--longevity-red);
+  color: white;
+}
+
+.chip-row-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+}
+.chip-day {
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: white;
+  border: 1.5px solid var(--gray-200);
+  font-family: var(--satoshi);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--perpetuity-black);
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.chip-day:hover { border-color: var(--longevity-red); }
+.chip-day.selected {
+  background: var(--longevity-red);
+  border-color: var(--longevity-red);
+  color: white;
+}
+
+/* Tonality / escalation cards */
+.tonality-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 10px;
+}
+.tonality-card {
+  background: white;
+  border: 1.5px solid var(--gray-200);
+  border-radius: 14px;
+  padding: 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.tonality-card:hover { border-color: var(--longevity-red); }
+.tonality-card.selected {
+  border-color: var(--longevity-red);
+  background: rgba(210, 2, 44, 0.03);
+}
+.tonality-name {
+  font-family: var(--satoshi);
+  font-weight: 700;
+  font-size: 13px;
+}
+.tonality-example {
+  font-family: var(--inter);
+  font-size: 11px;
+  color: var(--gray-600);
+  margin-top: 4px;
+  line-height: 1.4;
+  font-style: italic;
+}
+
+/* Toggle switch */
+.toggle-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 16px;
+  background: white;
+  border: 1px solid var(--gray-200);
+  border-radius: 14px;
+  margin-top: 16px;
+}
+.toggle-row .label {
+  font-family: var(--satoshi);
+  font-weight: 700;
+  font-size: 14px;
+}
+.toggle-row .sub {
+  font-family: var(--inter);
+  font-size: 11px;
+  color: var(--gray-600);
+  margin-top: 2px;
+}
+.toggle-switch {
+  width: 44px;
+  height: 26px;
+  background: var(--gray-200);
+  border-radius: 100px;
+  position: relative;
+  cursor: pointer;
+  transition: background 0.2s;
+  flex-shrink: 0;
+  border: none;
+}
+.toggle-switch::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 22px;
+  height: 22px;
+  background: white;
+  border-radius: 50%;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 2px 4px rgba(11, 5, 29, 0.15);
+}
+.toggle-switch.on { background: var(--longevity-red); }
+.toggle-switch.on::after { transform: translateX(18px); }
+
+/* Summary card */
+.summary-card {
+  margin-top: 16px;
+  background: var(--skin-beige);
+  border-radius: 18px;
+  padding: 18px;
+}
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(11, 5, 29, 0.08);
+  font-family: var(--inter);
+  font-size: 13px;
+}
+.summary-row:last-child { border-bottom: none; }
+.summary-row .key {
+  color: var(--gray-600);
+  font-weight: 500;
+}
+.summary-row .val {
+  font-family: var(--satoshi);
+  font-weight: 700;
+  color: var(--perpetuity-black);
+  text-align: right;
+  max-width: 60%;
+}
+
+/* Step navigation */
+.step-nav {
+  display: flex;
+  gap: 10px;
+  margin-top: 24px;
+}
+.step-nav .btn-secondary {
+  flex: 1;
+  padding: 14px;
+  background: var(--gray-100);
+  color: var(--perpetuity-black);
+  border: none;
+  border-radius: 14px;
+  font-family: var(--inter);
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+}
+.step-nav .btn-primary {
+  flex: 2;
+  padding: 14px;
+  background: var(--longevity-red);
+  color: white;
+  border: none;
+  border-radius: 14px;
+  font-family: var(--inter);
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(210, 2, 44, 0.25);
+}
+
+/* ============ Goal detail screen ============ */
+.goal-hero {
+  background: linear-gradient(135deg, var(--skin-beige) 0%, var(--skin-beige-deep) 100%);
+  border-radius: 0 0 28px 28px;
+  margin: 0 -20px;
+  padding: 16px 20px 24px;
+  position: relative;
+  overflow: hidden;
+}
+.goal-hero::before {
+  content: '';
+  position: absolute;
+  top: -60px; right: -60px;
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(210, 2, 44, 0.18) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.goal-hero-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+.goal-hero-tag {
+  font-family: var(--inter);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--longevity-red);
+  margin-top: 14px;
+  position: relative;
+  z-index: 1;
+}
+.goal-hero-numbers {
+  margin-top: 8px;
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  position: relative;
+  z-index: 1;
+}
+.goal-hero-current {
+  font-family: var(--satoshi);
+  font-weight: 900;
+  font-size: 42px;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+.goal-hero-current-label {
+  font-family: var(--inter);
+  font-size: 11px;
+  color: var(--gray-600);
+  font-weight: 500;
+  margin-top: 2px;
+  display: block;
+}
+.goal-hero-arrow {
+  font-family: var(--satoshi);
+  font-weight: 700;
+  font-size: 22px;
+  color: var(--gray-400);
+}
+.goal-hero-target {
+  font-family: var(--satoshi);
+  font-weight: 700;
+  font-size: 28px;
+  letter-spacing: -0.02em;
+  color: var(--gray-800);
+  line-height: 1;
+}
+.goal-hero-target-label {
+  font-family: var(--inter);
+  font-size: 11px;
+  color: var(--gray-600);
+  font-weight: 500;
+  margin-top: 2px;
+  display: block;
+}
+.goal-progress-bar {
+  margin-top: 18px;
+  height: 8px;
+  background: rgba(11, 5, 29, 0.08);
+  border-radius: 100px;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+}
+.goal-progress-fill {
+  height: 100%;
+  background: var(--longevity-red);
+  border-radius: 100px;
+  transition: width 0.6s ease;
+}
+.goal-hero-context {
+  margin-top: 10px;
+  font-family: var(--inter);
+  font-size: 12px;
+  color: var(--gray-600);
+  line-height: 1.5;
+  position: relative;
+  z-index: 1;
+}
+.goal-hero-context strong {
+  color: var(--perpetuity-black);
+  font-weight: 600;
+}
+
+/* Goal forecast card */
+.forecast-card {
+  margin-top: 18px;
+  padding: 16px 18px 12px;
+  background: white;
+  border: 1px solid var(--gray-200);
+  border-radius: 18px;
+  position: relative;
+}
+.forecast-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.forecast-title {
+  font-family: var(--satoshi);
+  font-weight: 700;
+  font-size: 14px;
+}
+.forecast-meta {
+  font-family: var(--inter);
+  font-size: 11px;
+  color: var(--gray-400);
+}
+
+/* Linked habits */
+.linked-habits {
+  margin-top: 18px;
+}
+.linked-habit-card {
+  background: white;
+  border: 1px solid var(--gray-200);
+  border-radius: 14px;
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+.linked-habit-streak {
+  font-family: var(--inter);
+  font-size: 11px;
+  color: var(--success-green);
+  font-weight: 600;
+}
+</style>
+</head>
+<body>
+<div class="stage">
+  <header class="stage-header">
+    <div class="brand">Friska</div>
+    <h1>App Prototype v2</h1>
+    <p>Bibliotek + plus-knapp i tab-bar · Inbox som ikon · Fyra användarresor</p>
+  </header>
+
+  <div class="flow-indicator">
+    <button class="flow-pill active" data-flow="all">Allt</button>
+    <button class="flow-pill" data-flow="upgrade">1. Bli patient</button>
+    <button class="flow-pill" data-flow="article">2. Läsa artikel</button>
+    <button class="flow-pill" data-flow="ai-chat">3. AI-tips → chatt</button>
+    <button class="flow-pill" data-flow="content-link">4. Länk i chatt</button>
+    <button class="flow-pill" data-flow="create-habit">5. Skapa rutin</button>
+    <button class="flow-pill" data-flow="goal">6. Mitt mål</button>
+    <button class="reset-btn" id="reset-btn" title="Återställ prototypen">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 109-9 9.75 9.75 0 00-7 3l-2 2"/><path d="M3 4v5h5"/></svg>
+      Återställ
+    </button>
+  </div>
+
+  <p class="flow-help">Klicka i appen för att utforska. Plus-knappen längst till höger expanderar till loggnings-alternativ. Inbox-ikonen finns uppe på Hem.</p>
+
+  <div class="phone-row">
+    <div class="phone-wrap">
+      <div class="phone-label">iOS — Friska app</div>
+      <div class="iphone">
+        <div class="iphone-screen">
+          <div class="ios-notch"></div>
+          <div class="ios-status-bar">
+            <span>9:41</span>
+            <div style="width: 120px;"></div>
+            <div class="ios-status-right">
+              <svg width="18" height="12" viewBox="0 0 18 12" fill="none"><rect x="0" y="8" width="3" height="4" rx="0.5" fill="#0B051D"/><rect x="5" y="5" width="3" height="7" rx="0.5" fill="#0B051D"/><rect x="10" y="2" width="3" height="10" rx="0.5" fill="#0B051D"/><rect x="15" y="0" width="3" height="12" rx="0.5" fill="#0B051D" opacity="0.35"/></svg>
+              <svg width="16" height="12" viewBox="0 0 16 12" fill="none"><path d="M8 10.5a1.3 1.3 0 110-2.6 1.3 1.3 0 010 2.6zM3.4 6.4a6.5 6.5 0 019.2 0l-1.2 1.2a4.8 4.8 0 00-6.8 0L3.4 6.4zM.8 3.8a10.2 10.2 0 0114.4 0L14 5a8.5 8.5 0 00-12 0L.8 3.8z" fill="#0B051D"/></svg>
+              <svg width="26" height="12" viewBox="0 0 26 12" fill="none"><rect x="0.5" y="0.5" width="22" height="11" rx="3" stroke="#0B051D" fill="none"/><rect x="2" y="2" width="18" height="8" rx="1.5" fill="#0B051D"/><rect x="23.5" y="4" width="2" height="4" rx="1" fill="#0B051D"/></svg>
+            </div>
+          </div>
+
+          <div class="screens-stack">
+
+            <!-- ============ HOME ============ -->
+            <div class="screen active" id="screen-home">
+              <div class="screen-content">
+                <div class="greeting-row">
+                  <div class="greet-text">
+                    <div class="day">Onsdag · 22 april</div>
+                    <div class="name">Godmorgon Sarah</div>
+                  </div>
+                  <div class="top-actions">
+                    <button class="inbox-icon-btn" onclick="openInboxSheet()" aria-label="Inbox">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-6l-2 3h-4l-2-3H2M5.45 5.11L2 12v6a2 2 0 002 2h16a2 2 0 002-2v-6l-3.45-6.89A2 2 0 0016.76 4H7.24a2 2 0 00-1.79 1.11z"/></svg>
+                      <span class="badge" id="inbox-badge">2</span>
+                    </button>
+                    <div class="avatar">S</div>
+                  </div>
+                </div>
+
+                <!-- Daily overview: nutrition + activity side by side -->
+                <div class="daily-row">
+                  <div class="daily-card" onclick="showToast('Nutrition-detalj kommer')">
+                    <div class="label">Nutrition idag</div>
+                    <div class="ring-wrap">
+                      <svg viewBox="0 0 100 100">
+                        <circle class="ring-bg" cx="50" cy="50" r="42"/>
+                        <circle class="ring-fg" cx="50" cy="50" r="42" stroke-dasharray="182 264"/>
+                      </svg>
+                      <div class="ring-center">
+                        <div class="ring-val">1 240</div>
+                        <div class="ring-sub">/ 1 800 kcal</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="daily-card" onclick="showToast('Aktivitet-detalj kommer')">
+                    <div class="label">Aktivitet idag</div>
+                    <div class="ring-wrap">
+                      <svg viewBox="0 0 100 100">
+                        <circle class="ring-bg" cx="50" cy="50" r="42"/>
+                        <circle class="ring-fg" cx="50" cy="50" r="42" stroke-dasharray="165 264"/>
+                      </svg>
+                      <div class="ring-center">
+                        <div class="ring-val">6 240</div>
+                        <div class="ring-sub">/ 10 000 steg</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="today-block">
+                  <svg class="corner-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+                  <div class="today-tag">Din morgon</div>
+                  <div class="today-title">3 rutiner och en koll</div>
+                  <div class="today-list">
+                    <div class="habit-card">
+                      <div class="habit-icon-sm"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
+                      <div class="habit-body">
+                        <div class="habit-name">Registrera vikt</div>
+                        <div class="habit-time">Idag · kl. 07:00</div>
+                      </div>
+                      <button class="habit-add-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
+                    </div>
+                    <div class="habit-card">
+                      <div class="habit-icon-sm"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2v6a6 6 0 1012 0V2M2 22h20"/></svg></div>
+                      <div class="habit-body">
+                        <div class="habit-name">Mät blodtrycket</div>
+                        <div class="habit-time">Idag · kl. 09:00</div>
+                      </div>
+                      <button class="habit-add-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
+                    </div>
+                    <div class="habit-card">
+                      <div class="habit-icon-sm"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a4 4 0 014 4v6a4 4 0 11-8 0V6a4 4 0 014-4zM8 22h8"/></svg></div>
+                      <div class="habit-body">
+                        <div class="habit-name">Logga mående</div>
+                        <div class="habit-time">När som helst idag</div>
+                      </div>
+                      <button class="habit-add-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
+                    </div>
+                  </div>
+                  <button class="add-habit-btn" onclick="openCreateHabit()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+                    Lägg till en rutin
+                  </button>
+                </div>
+
+                <div class="insight-card">
+                  <div class="insight-tag"><span class="insight-tag-dot"></span>Återkoppling från coachen</div>
+                  <div class="insight-title">Dina <em>bästa dagar</em> börjar med protein före 10.</div>
+                  <div class="insight-body">
+                    De fem dagar du åt <strong>≥25 g protein på morgonen</strong> snittade du <strong>320 kcal lägre</strong> på kvällen, utan extra ansträngning.
+                  </div>
+                  <button class="insight-cta" onclick="openAIChat()">
+                    Be om förslag på frukost
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                  </button>
+                </div>
+
+                <div class="prep-block">
+                  <div class="prep-tag"><span class="prep-tag-dot"></span>Förberedelse inför kontroll</div>
+                  <div class="prep-title">Behandling av högt blodtryck</div>
+                  <div class="prep-meta">Inför ditt besök 5 maj · Anna (sjuksköterska)</div>
+                  <div class="prep-list">
+                    <div class="prep-item">
+                      <div class="habit-icon-sm" style="background: var(--white); width: 32px; height: 32px;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2v6a6 6 0 1012 0V2"/></svg></div>
+                      <div class="prep-item-body">
+                        <div class="prep-item-name">Mät blodtrycket morgon och kväll</div>
+                        <div class="prep-item-progress">3 av 7 dagar klara</div>
+                      </div>
+                      <svg class="prep-item-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="upgrade-hero" style="cursor: pointer; margin-top: 14px;" onclick="openUpgrade()">
+                  <div class="upgrade-hero-tag">Få egen läkare</div>
+                  <div class="upgrade-hero-title">Vill du ha <em>medicinsk behandling</em>?</div>
+                  <div class="upgrade-hero-body">Egen läkare och sjuksköterska. Receptförnyelse, GLP-1, blodtrycksbehandling. Från 299 kr/mån.</div>
+                  <button class="btn-full-primary" style="margin-top: 16px;" onclick="event.stopPropagation(); openUpgrade();">Läs mer →</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- ============ MIN HÄLSA ============ -->
+            <div class="screen" id="screen-health">
+              <div class="screen-content">
+                <div class="greeting-row">
+                  <div class="greet-text">
+                    <div class="day">Veckans översikt</div>
+                    <div class="name">Min hälsa</div>
+                  </div>
+                  <div class="avatar">S</div>
+                </div>
+
+                <div class="health-hero" onclick="openGoalDetail()" style="cursor: pointer;">
+                  <div class="health-hero-tag">3 veckor · Vikt</div>
+                  <div class="health-hero-row">
+                    <span class="health-hero-value">86,6</span>
+                    <span class="health-hero-unit">kg</span>
+                  </div>
+                  <span class="health-hero-delta">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12l-7 7-7-7M12 19V5"/></svg>
+                    −2,4 kg
+                  </span>
+                  <div class="health-context">
+                    <strong>På plan mot ditt mål 75 kg.</strong> Beräknad tid kvar: 18 veckor.
+                  </div>
+                </div>
+
+                <div class="insight-card" style="margin-top: 12px;">
+                  <div class="insight-tag"><span class="insight-tag-dot"></span>Mönster i din data</div>
+                  <div class="insight-title">Tre veckor i rad: <em>stadig</em> nedgång.</div>
+                  <div class="insight-body">
+                    Ditt midjemått har minskat <strong>3 cm</strong> samtidigt som vikten gått ned. Det är ett särskilt bra tecken, det visar att du tappar bukfett.
+                  </div>
+                </div>
+
+                <div class="chart-card">
+                  <div class="chart-head">
+                    <span class="chart-title">Viktutveckling</span>
+                  </div>
+                  <svg class="chart-svg" viewBox="0 0 320 110" preserveAspectRatio="none">
+                    <defs>
+                      <linearGradient id="weightG" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#D2022C" stop-opacity="0.25"/>
+                        <stop offset="100%" stop-color="#D2022C" stop-opacity="0"/>
+                      </linearGradient>
+                    </defs>
+                    <line x1="0" y1="25" x2="320" y2="25" stroke="#E6E6EA" stroke-width="1" stroke-dasharray="2 3"/>
+                    <line x1="0" y1="55" x2="320" y2="55" stroke="#E6E6EA" stroke-width="1" stroke-dasharray="2 3"/>
+                    <line x1="0" y1="85" x2="320" y2="85" stroke="#E6E6EA" stroke-width="1" stroke-dasharray="2 3"/>
+                    <path d="M 0 22 L 26 27 L 50 30 L 75 35 L 100 40 L 125 45 L 150 50 L 175 55 L 200 58 L 225 62 L 250 65 L 275 68 L 300 70 L 320 72 L 320 110 L 0 110 Z" fill="url(#weightG)"/>
+                    <path d="M 0 22 L 26 27 L 50 30 L 75 35 L 100 40 L 125 45 L 150 50 L 175 55 L 200 58 L 225 62 L 250 65 L 275 68 L 300 70 L 320 72" stroke="#D2022C" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                    <circle cx="0" cy="22" r="3" fill="white" stroke="#D2022C" stroke-width="2"/>
+                    <circle cx="320" cy="72" r="4" fill="#D2022C"/>
+                  </svg>
+                  <div class="chart-watermark">
+                    <span class="via">via</span>
+                    <span class="friska-mark">Friska</span>
+                  </div>
+                </div>
+
+                <div class="stat-grid">
+                  <div class="stat-tile">
+                    <div class="stat-tile-label">BMI</div>
+                    <div class="stat-tile-value">28,3 <span class="unit">kg/m²</span></div>
+                  </div>
+                  <div class="stat-tile">
+                    <div class="stat-tile-label">Midjemått</div>
+                    <div class="stat-tile-value">94 <span class="unit">cm</span></div>
+                  </div>
+                  <div class="stat-tile">
+                    <div class="stat-tile-label">Snitt kcal/dag</div>
+                    <div class="stat-tile-value">1 820</div>
+                  </div>
+                  <div class="stat-tile">
+                    <div class="stat-tile-label">Loggade dagar</div>
+                    <div class="stat-tile-value">18 <span class="unit">/ 21</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ============ CHATTAR ============ -->
+            <div class="screen" id="screen-chats">
+              <div class="screen-content">
+                <div class="greeting-row">
+                  <div class="greet-text">
+                    <div class="day">Konversationer</div>
+                    <div class="name">Chattar</div>
+                  </div>
+                  <div class="avatar">S</div>
+                </div>
+
+                <div class="chat-section">
+                  <div class="chat-section-h">Mitt vårdteam</div>
+                  <div class="chat-row" onclick="openChatNurse()">
+                    <div class="chat-avatar nurse">A</div>
+                    <div class="chat-body">
+                      <div class="chat-name-row">
+                        <span class="chat-name">Anna Lindqvist</span>
+                        <span class="chat-time">14:22</span>
+                      </div>
+                      <div class="chat-preview">Bra! Då ses vi 5 maj. Kom ihåg att...</div>
+                    </div>
+                  </div>
+                  <div class="chat-row unread" onclick="openChatDoctor()">
+                    <div class="chat-avatar doctor">M</div>
+                    <div class="chat-body">
+                      <div class="chat-name-row">
+                        <span class="chat-name">Dr. Magnus Berg</span>
+                        <span class="chat-time">10:30</span>
+                      </div>
+                      <div class="chat-preview">Jag delar en artikel om hur GLP-1 fungerar...</div>
+                    </div>
+                    <span class="chat-unread-dot"></span>
+                  </div>
+                </div>
+
+                <div class="chat-section">
+                  <div class="chat-section-h">Friska AI</div>
+                  <div class="chat-row" onclick="openAIChat()">
+                    <div class="chat-avatar ai">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2 5 5 .5-4 3.5 1.5 5L12 13.5 7.5 16l1.5-5L5 7.5l5-.5z"/></svg>
+                    </div>
+                    <div class="chat-body">
+                      <div class="chat-name-row">
+                        <span class="chat-name">Friska AI-coach</span>
+                        <span class="chat-time">12:15</span>
+                      </div>
+                      <div class="chat-preview">Tre förslag på protein-rik frukost...</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ============ CHAT AI ============ -->
+            <div class="screen" id="screen-chat-ai">
+              <div class="screen-content" style="padding-bottom: 24px;">
+                <div class="chat-header">
+                  <button class="chat-header-back" onclick="goBack()" aria-label="Tillbaka">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+                  </button>
+                  <div class="chat-header-info">
+                    <div class="chat-header-avatar" style="background: var(--perpetuity-black); color: var(--skin-beige);">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2 5 5 .5-4 3.5 1.5 5L12 13.5 7.5 16l1.5-5L5 7.5l5-.5z"/></svg>
+                    </div>
+                    <div>
+                      <div class="chat-header-name">Friska AI-coach</div>
+                      <div class="chat-header-role">Här för att stödja dig</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="chat-messages">
+                  <div class="chat-context-card">
+                    <div class="chat-context-tag">Återkoppling från coachen</div>
+                    <div class="chat-context-text">Dina <strong>bästa dagar börjar med ≥25 g protein före kl 10</strong>. Du frågade om förslag på frukost.</div>
+                  </div>
+                  <div class="chat-msg them ai">Bra att du följer upp. Här är ett av mina favoritrecept som passar din profil.</div>
+                  <div class="library-card-mini" onclick="showToast('Recept öppnat (kommande detaljvy)')">
+                    <div class="library-card-mini-image recipe">
+                      <span class="library-card-mini-type">Recept</span>
+                    </div>
+                    <div class="library-card-mini-body">
+                      <div class="library-card-mini-title">Grekisk yoghurt med valnötter och bär</div>
+                      <div class="library-card-mini-meta">28 g protein · 5 min · Frukost</div>
+                    </div>
+                  </div>
+                  <div class="chat-msg them ai">Vill du se fler alternativ kan du bläddra i biblioteket under fliken Bibliotek.</div>
+                </div>
+              </div>
+              <div class="chat-input-bar">
+                <input type="text" class="chat-input" placeholder="Fråga AI-coachen..." />
+                <button class="chat-send-btn" aria-label="Skicka">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- ============ CHAT DOCTOR (with library link) ============ -->
+            <div class="screen" id="screen-chat-doctor">
+              <div class="screen-content" style="padding-bottom: 24px;">
+                <div class="chat-header">
+                  <button class="chat-header-back" onclick="goBack()" aria-label="Tillbaka">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+                  </button>
+                  <div class="chat-header-info">
+                    <div class="chat-header-avatar" style="background: linear-gradient(135deg, #1F7A4D, #155233);">M</div>
+                    <div>
+                      <div class="chat-header-name">Dr. Magnus Berg</div>
+                      <div class="chat-header-role">Läkare · Vårdteam</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="chat-messages">
+                  <span class="chat-msg-time">Idag 10:28</span>
+                  <div class="chat-msg them">Hej Sarah! Jag har funderat på frågan du ställde om hur GLP-1 påverkar fettförbränningen. Här är en bra artikel som förklarar mekanismerna.</div>
+                  <div class="library-card-mini" onclick="openArticle()">
+                    <div class="library-card-mini-image article">
+                      <span class="library-card-mini-type">Artikel</span>
+                    </div>
+                    <div class="library-card-mini-body">
+                      <div class="library-card-mini-title">Hur GLP-1 fungerar i kroppen</div>
+                      <div class="library-card-mini-meta">5 min läsning · Av Karolinska Institutet</div>
+                    </div>
+                  </div>
+                  <div class="chat-msg them">Säg till om något är oklart, vi kan prata mer om det 5 maj.</div>
+                  <span class="chat-msg-time">10:30</span>
+                </div>
+              </div>
+              <div class="chat-input-bar">
+                <input type="text" class="chat-input" placeholder="Skriv ett meddelande..." />
+                <button class="chat-send-btn" aria-label="Skicka">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- ============ CHAT NURSE ============ -->
+            <div class="screen" id="screen-chat-nurse">
+              <div class="screen-content" style="padding-bottom: 24px;">
+                <div class="chat-header">
+                  <button class="chat-header-back" onclick="goBack()" aria-label="Tillbaka">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+                  </button>
+                  <div class="chat-header-info">
+                    <div class="chat-header-avatar" style="background: linear-gradient(135deg, #4A6FB8, #2B4A8F);">A</div>
+                    <div>
+                      <div class="chat-header-name">Anna Lindqvist</div>
+                      <div class="chat-header-role">Sjuksköterska · Vårdteam</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="chat-messages">
+                  <span class="chat-msg-time">Idag 14:18</span>
+                  <div class="chat-msg them">Hej Sarah! Hur har du mått den senaste veckan?</div>
+                  <div class="chat-msg me">Hej! Jag har mått bra. Lite illamående bara dag 1 efter dosen som vanligt.</div>
+                  <div class="chat-msg them">Bra! Då ses vi 5 maj. Kom ihåg att fortsätta med blodtrycksmätningarna morgon och kväll.</div>
+                  <span class="chat-msg-time">14:22</span>
+                </div>
+              </div>
+              <div class="chat-input-bar">
+                <input type="text" class="chat-input" placeholder="Skriv ett meddelande..." />
+                <button class="chat-send-btn" aria-label="Skicka">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- ============ BIBLIOTEK ============ -->
+            <div class="screen" id="screen-library">
+              <div class="screen-content">
+                <div class="greeting-row">
+                  <div class="greet-text">
+                    <div class="day">Innehåll och program</div>
+                    <div class="name">Bibliotek</div>
+                  </div>
+                  <div class="avatar">S</div>
+                </div>
+
+                <div class="library-search" onclick="showToast('Sökfunktion (kommande)')">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
+                  Sök recept, övningar, artiklar...
+                </div>
+
+                <div class="program-progress-card" onclick="openProgram()">
+                  <div class="pp-tag">Pågående program</div>
+                  <div class="pp-title">Hållbar viktnedgång vid GLP-1-behandling</div>
+                  <div class="pp-meta">Sektion 4 av 12 · 8 sektioner kvar</div>
+                  <div class="program-progress-track">
+                    <div class="program-progress-fill" style="width: 33%;"></div>
+                  </div>
+                </div>
+
+                <div class="library-categories">
+                  <div class="lib-category programs" onclick="showToast('Alla program (kommande)')">
+                    <svg class="lib-category-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2zM22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
+                    <div class="lib-category-name">Program</div>
+                    <div class="lib-category-count">3 program</div>
+                  </div>
+                  <div class="lib-category recipes" onclick="showToast('Alla recept (kommande)')">
+                    <svg class="lib-category-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11h18M5 11V7a3 3 0 013-3h8a3 3 0 013 3v4M5 11v8a2 2 0 002 2h10a2 2 0 002-2v-8M9 16h.01M15 16h.01"/></svg>
+                    <div class="lib-category-name">Recept</div>
+                    <div class="lib-category-count">142 recept</div>
+                  </div>
+                  <div class="lib-category exercises" onclick="showToast('Alla övningar (kommande)')">
+                    <svg class="lib-category-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h-2M19 12h2M7 5l-1.5-1.5M16.5 16.5L18 18M7 19l-1.5 1.5M16.5 7.5L18 6M9 12a3 3 0 116 0 3 3 0 01-6 0z"/></svg>
+                    <div class="lib-category-name">Övningar</div>
+                    <div class="lib-category-count">38 övningar</div>
+                  </div>
+                  <div class="lib-category articles" onclick="showToast('Alla artiklar (kommande)')">
+                    <svg class="lib-category-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
+                    <div class="lib-category-name">Artiklar</div>
+                    <div class="lib-category-count">76 artiklar</div>
+                  </div>
+                </div>
+
+                <div class="lib-section">
+                  <div class="section-h" style="margin-top: 0;">
+                    <h2>Föreslagna för dig</h2>
+                  </div>
+                  <div class="lib-row-scroll">
+                    <div class="lib-card" onclick="showToast('Recept öppnat')">
+                      <div class="lib-card-image recipe-1"><span class="lib-type-pill">Recept</span></div>
+                      <div class="lib-card-body">
+                        <div class="lib-card-title">Grekisk yoghurt med valnötter</div>
+                        <div class="lib-card-meta">28 g protein · 5 min</div>
+                      </div>
+                    </div>
+                    <div class="lib-card" onclick="openArticle()">
+                      <div class="lib-card-image article-1"><span class="lib-type-pill">Artikel</span></div>
+                      <div class="lib-card-body">
+                        <div class="lib-card-title">Hur GLP-1 fungerar i kroppen</div>
+                        <div class="lib-card-meta">5 min läsning</div>
+                      </div>
+                    </div>
+                    <div class="lib-card" onclick="showToast('Övning öppnad')">
+                      <div class="lib-card-image exercise-1"><span class="lib-type-pill">Övning</span></div>
+                      <div class="lib-card-body">
+                        <div class="lib-card-title">Promenad efter middagen</div>
+                        <div class="lib-card-meta">10 min · Lågintensiv</div>
+                      </div>
+                    </div>
+                    <div class="lib-card" onclick="showToast('Recept öppnat')">
+                      <div class="lib-card-image recipe-2"><span class="lib-type-pill">Recept</span></div>
+                      <div class="lib-card-body">
+                        <div class="lib-card-title">Cottage cheese med ägg</div>
+                        <div class="lib-card-meta">32 g protein · 7 min</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="lib-section">
+                  <div class="section-h" style="margin-top: 0;">
+                    <h2>Senast lästa</h2>
+                  </div>
+                  <div class="lib-row-scroll">
+                    <div class="lib-card" onclick="showToast('Recept öppnat')">
+                      <div class="lib-card-image recipe-3"><span class="lib-type-pill">Recept</span></div>
+                      <div class="lib-card-body">
+                        <div class="lib-card-title">Bowl med quinoa och lax</div>
+                        <div class="lib-card-meta">40 g protein · 15 min</div>
+                      </div>
+                    </div>
+                    <div class="lib-card" onclick="showToast('Artikel öppnad')">
+                      <div class="lib-card-image article-2"><span class="lib-type-pill">Artikel</span></div>
+                      <div class="lib-card-body">
+                        <div class="lib-card-title">Plana ut: när vågen står still</div>
+                        <div class="lib-card-meta">7 min läsning</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ============ PROGRAM DETAIL ============ -->
+            <div class="screen" id="screen-program">
+              <div class="program-hero">
+                <div class="program-hero-top">
+                  <button class="top-bar-back" onclick="goBack()" style="background: rgba(255,255,255,0.6);" aria-label="Tillbaka">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+                  </button>
+                  <div class="top-bar-spacer"></div>
+                </div>
+                <div class="program-hero-bottom">
+                  <div class="program-hero-tag">Self-study program · 12 sektioner</div>
+                  <div class="program-hero-title">Hållbar viktnedgång vid GLP-1-behandling</div>
+                  <div class="program-hero-meta">Sektion 4 av 12 klar · ~3 minuter per sektion</div>
+                </div>
+              </div>
+              <div class="screen-content" style="padding-top: 0;">
+                <div class="section-h"><h2>Sektioner</h2></div>
+                <div class="program-section-list">
+                  <div class="program-section-card completed">
+                    <div class="program-section-num"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></div>
+                    <div class="ps-body">
+                      <div class="ps-title">Vad är GLP-1 och hur fungerar det?</div>
+                      <div class="ps-meta"><span class="ps-type-pill">Artikel</span>5 min · Klar</div>
+                    </div>
+                  </div>
+                  <div class="program-section-card completed">
+                    <div class="program-section-num"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></div>
+                    <div class="ps-body">
+                      <div class="ps-title">Sätta realistiska mål</div>
+                      <div class="ps-meta"><span class="ps-type-pill">Övning</span>7 min · Klar</div>
+                    </div>
+                  </div>
+                  <div class="program-section-card completed">
+                    <div class="program-section-num"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></div>
+                    <div class="ps-body">
+                      <div class="ps-title">Hantera biverkningar i början</div>
+                      <div class="ps-meta"><span class="ps-type-pill">Artikel</span>4 min · Klar</div>
+                    </div>
+                  </div>
+                  <div class="program-section-card" onclick="openArticle()">
+                    <div class="program-section-num">4</div>
+                    <div class="ps-body">
+                      <div class="ps-title">Protein på morgonen: varför det funkar</div>
+                      <div class="ps-meta"><span class="ps-type-pill">Artikel</span>5 min · Pågående</div>
+                    </div>
+                    <svg class="ps-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+                  </div>
+                  <div class="program-section-card">
+                    <div class="program-section-num">5</div>
+                    <div class="ps-body">
+                      <div class="ps-title">Tre proteinrika frukostar</div>
+                      <div class="ps-meta"><span class="ps-type-pill">Recept</span>12 min</div>
+                    </div>
+                    <svg class="ps-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+                  </div>
+                  <div class="program-section-card">
+                    <div class="program-section-num">6</div>
+                    <div class="ps-body">
+                      <div class="ps-title">Vad gör jag när vågen står still?</div>
+                      <div class="ps-meta"><span class="ps-type-pill">Artikel</span>6 min</div>
+                    </div>
+                    <svg class="ps-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+                  </div>
+                  <div class="program-section-card">
+                    <div class="program-section-num">7</div>
+                    <div class="ps-body">
+                      <div class="ps-title">Lättviktsövningar för vardagen</div>
+                      <div class="ps-meta"><span class="ps-type-pill">Övning</span>10 min</div>
+                    </div>
+                    <svg class="ps-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ============ ARTICLE DETAIL ============ -->
+            <div class="screen" id="screen-article">
+              <div class="screen-content" style="padding-top: 0;">
+                <div style="display: flex; justify-content: space-between; padding: 8px 0 0; position: relative; z-index: 5;">
+                  <button class="top-bar-back" onclick="goBack()" style="background: rgba(255,255,255,0.85); margin-top: 4px;" aria-label="Tillbaka">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+                  </button>
+                </div>
+                <div class="article-hero-image" style="margin-top: -44px;"></div>
+                <div class="article-meta-row">
+                  <span class="type-pill">Artikel</span>
+                  <span>Sektion 4 av 12 · Hållbar viktnedgång</span>
+                </div>
+                <h1 class="article-title">Protein på morgonen: varför det funkar</h1>
+                <p class="article-lead">Att börja dagen med tillräckligt protein är ett av de mest evidensbaserade verktygen vi har för att stötta GLP-1-behandlingen. Här förklarar vi varför.</p>
+                <div class="article-body">
+                  <p>När du tar GLP-1 minskar din aptit naturligt. Det är behandlingens primära mekanism. Men det innebär också att varje måltid räknas mer än tidigare. Om du äter för lite protein på morgonen kan du hamna i en situation där kroppen söker efter energi senare på dagen, ofta från snabba kolhydrater.</p>
+                  <h3>Varför just morgonen?</h3>
+                  <p>Studier visar att proteinrik frukost har starkare effekt på mättnad och blodsockerstabilitet än samma protein konsumerat senare på dagen.</p>
+                  <h3>Hur mycket räcker?</h3>
+                  <p>Riktmärket vi använder på Friska är minst 25 gram protein före kl 10. Det motsvarar ungefär 3 ägg, en stor portion grekisk yoghurt med nötter, eller en proteinsmoothie med havre.</p>
+                </div>
+                <button class="article-mark-done" onclick="markArticleDone()">Markera som läst →</button>
+              </div>
+            </div>
+
+            <!-- ============ UPGRADE FLOW ============ -->
+            <div class="screen modal" id="screen-upgrade">
+              <div class="screen-content">
+                <div class="top-bar">
+                  <button class="top-bar-back" onclick="goBack()" aria-label="Stäng">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 6l12 12M18 6l-12 12"/></svg>
+                  </button>
+                  <div class="top-bar-title">Bli patient</div>
+                  <div class="top-bar-spacer"></div>
+                </div>
+                <div class="upgrade-hero">
+                  <div class="upgrade-hero-tag">Subscription · 299 kr/mån</div>
+                  <div class="upgrade-hero-title">Egen läkare och sjuksköterska. <em>Hela vägen.</em></div>
+                  <div class="upgrade-hero-body">Vi utreder och behandlar hypertoni och obesitas via både livsstilsintervention och farmakologisk behandling.</div>
+                </div>
+                <div class="upgrade-features">
+                  <div class="upgrade-feature">
+                    <div class="upgrade-feature-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></div>
+                    <div class="upgrade-feature-body">
+                      <div class="upgrade-feature-name">Egen läkare och sjuksköterska</div>
+                      <div class="upgrade-feature-desc">Asynkron kontakt via chatt. Svar inom 24h.</div>
+                    </div>
+                  </div>
+                  <div class="upgrade-feature">
+                    <div class="upgrade-feature-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></div>
+                    <div class="upgrade-feature-body">
+                      <div class="upgrade-feature-name">Receptförnyelse och GLP-1-behandling</div>
+                      <div class="upgrade-feature-desc">Wegovy, Mounjaro, Ozempic samt blodtrycksmedicinering.</div>
+                    </div>
+                  </div>
+                  <div class="upgrade-feature">
+                    <div class="upgrade-feature-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></div>
+                    <div class="upgrade-feature-body">
+                      <div class="upgrade-feature-name">3 livsstilsprogram</div>
+                      <div class="upgrade-feature-desc">Kost, aktivitet och stresshantering, anpassade efter din behandling.</div>
+                    </div>
+                  </div>
+                  <div class="upgrade-feature">
+                    <div class="upgrade-feature-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></div>
+                    <div class="upgrade-feature-body">
+                      <div class="upgrade-feature-name">AI-coach på medicinteknisk grund</div>
+                      <div class="upgrade-feature-desc">BTD CDSS säkrar att råden är kliniskt korrekta.</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="upgrade-price-card">
+                  <div class="upgrade-price-tag">Vårt pris</div>
+                  <div class="upgrade-price-amount">299 <span>kr/mån</span></div>
+                  <div class="upgrade-price-compare">Marknadens näst lägsta pris är 995 kr/mån</div>
+                  <button class="upgrade-cta" onclick="completeUpgrade()">Starta min behandling →</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- ============ UPGRADE CONFIRMATION ============ -->
+            <div class="screen" id="screen-upgrade-confirm">
+              <div class="screen-content">
+                <div class="top-bar">
+                  <div style="width: 36px;"></div>
+                  <div class="top-bar-title">Välkommen som patient</div>
+                  <div class="top-bar-spacer"></div>
+                </div>
+                <div class="conf-celebration">
+                  <div class="conf-celebration-icon">
+                    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>
+                  </div>
+                  <div class="conf-celebration-title">Du är nu <em>patient</em> hos Friska</div>
+                  <div class="conf-celebration-body">Ditt vårdteam är aktiverat. Magnus och Anna kontaktar dig inom 24 timmar.</div>
+                </div>
+                <div class="conf-team">
+                  <div class="conf-team-title">Ditt vårdteam</div>
+                  <div class="conf-team-row">
+                    <div class="conf-team-member">
+                      <div class="conf-team-avatar" style="background: linear-gradient(135deg, #1F7A4D, #155233);">M</div>
+                      <div class="conf-team-name">Dr. Magnus Berg</div>
+                      <div class="conf-team-role">Läkare</div>
+                    </div>
+                    <div class="conf-team-member">
+                      <div class="conf-team-avatar" style="background: linear-gradient(135deg, #4A6FB8, #2B4A8F);">A</div>
+                      <div class="conf-team-name">Anna Lindqvist</div>
+                      <div class="conf-team-role">Sjuksköterska</div>
+                    </div>
+                  </div>
+                </div>
+                <button class="btn-full-primary" style="margin-top: 28px;" onclick="finishUpgrade()">Till hemskärmen →</button>
+              </div>
+            </div>
+
+            <!-- ============ HABIT CREATION STEP 1: TYPE ============ -->
+            <div class="screen modal" id="screen-habit-1">
+              <div class="screen-content">
+                <div class="top-bar">
+                  <button class="top-bar-back" onclick="closeCreateHabit()" aria-label="Stäng">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 6l12 12M18 6l-12 12"/></svg>
+                  </button>
+                  <div class="top-bar-title">Skapa rutin</div>
+                  <div class="top-bar-spacer"></div>
+                </div>
+
+                <div class="step-progress">
+                  <div class="step-bar active"></div>
+                  <div class="step-bar"></div>
+                  <div class="step-bar"></div>
+                  <div class="step-bar"></div>
+                </div>
+
+                <div class="step-title">Vilken typ av rutin?</div>
+                <div class="step-subtitle">Välj från en mall eller skapa en egen. Mallarna är förberedda för Friska och kopplas automatiskt till ditt mål om relevant.</div>
+
+                <div class="template-list">
+                  <div class="template-card" onclick="selectTemplate(this)">
+                    <div class="template-icon">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h18M5 6h14a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2zM8 9v6M16 9v6"/></svg>
+                    </div>
+                    <div class="template-body">
+                      <div class="template-name">Mät midjemått</div>
+                      <div class="template-desc">Bättre prediktor för bukfett än vikten ensam</div>
+                    </div>
+                    <div class="template-radio"></div>
+                  </div>
+                  <div class="template-card selected" onclick="selectTemplate(this)">
+                    <div class="template-icon">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 4v3M9 14l-3 6M15 14l3 6M9 14h6l-1-3-2-1-2 1-1 3z"/><circle cx="12" cy="3" r="1"/></svg>
+                    </div>
+                    <div class="template-body">
+                      <div class="template-name">Promenad efter middagen</div>
+                      <div class="template-desc">Sänker blodsockertopp och stödjer GLP-1</div>
+                    </div>
+                    <div class="template-radio"></div>
+                  </div>
+                  <div class="template-card" onclick="selectTemplate(this)">
+                    <div class="template-icon">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/></svg>
+                    </div>
+                    <div class="template-body">
+                      <div class="template-name">Protein på morgonen</div>
+                      <div class="template-desc">Minst 25 g innan kl 10 enligt din coach</div>
+                    </div>
+                    <div class="template-radio"></div>
+                  </div>
+                  <div class="template-card" onclick="selectTemplate(this)">
+                    <div class="template-icon">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5C9 6 6 9.5 6 14a6 6 0 1012 0c0-4.5-3-8-6-11.5z"/></svg>
+                    </div>
+                    <div class="template-body">
+                      <div class="template-name">Drick 2 liter vatten</div>
+                      <div class="template-desc">Stödjer mättnadskänsla och nedbrytning</div>
+                    </div>
+                    <div class="template-radio"></div>
+                  </div>
+
+                  <div class="template-divider">
+                    <div class="template-card" onclick="selectTemplate(this)">
+                      <div class="template-icon" style="background: var(--gray-100); color: var(--gray-600);">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+                      </div>
+                      <div class="template-body">
+                        <div class="template-name">Skapa egen rutin</div>
+                        <div class="template-desc">Du formulerar texten själv</div>
+                      </div>
+                      <div class="template-radio"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="step-nav">
+                  <button class="btn-primary" onclick="goToHabitStep(2)" style="flex: 1;">Nästa</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- ============ HABIT CREATION STEP 2: FREQUENCY ============ -->
+            <div class="screen" id="screen-habit-2">
+              <div class="screen-content">
+                <div class="top-bar">
+                  <button class="top-bar-back" onclick="goToHabitStep(1)" aria-label="Tillbaka">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+                  </button>
+                  <div class="top-bar-title">Skapa rutin</div>
+                  <div class="top-bar-spacer"></div>
+                </div>
+
+                <div class="step-progress">
+                  <div class="step-bar active"></div>
+                  <div class="step-bar active"></div>
+                  <div class="step-bar"></div>
+                  <div class="step-bar"></div>
+                </div>
+
+                <div class="step-title">När vill du göra detta?</div>
+                <div class="step-subtitle">Välj frekvens och tid. Du kan ändra senare.</div>
+
+                <div class="chip-group-label">Hur ofta?</div>
+                <div class="chip-row">
+                  <button class="chip selected" onclick="selectChip(this)">Varje dag</button>
+                  <button class="chip" onclick="selectChip(this)">Vissa dagar</button>
+                  <button class="chip" onclick="selectChip(this)">Veckovis</button>
+                </div>
+
+                <div class="chip-group-label">Vilka dagar?</div>
+                <div class="chip-row-days">
+                  <button class="chip-day selected" onclick="selectDay(this)">M</button>
+                  <button class="chip-day selected" onclick="selectDay(this)">T</button>
+                  <button class="chip-day selected" onclick="selectDay(this)">O</button>
+                  <button class="chip-day selected" onclick="selectDay(this)">T</button>
+                  <button class="chip-day selected" onclick="selectDay(this)">F</button>
+                  <button class="chip-day selected" onclick="selectDay(this)">L</button>
+                  <button class="chip-day selected" onclick="selectDay(this)">S</button>
+                </div>
+
+                <div class="chip-group-label">När på dagen?</div>
+                <div class="chip-row">
+                  <button class="chip" onclick="selectChip(this)">Morgon</button>
+                  <button class="chip" onclick="selectChip(this)">Lunch</button>
+                  <button class="chip selected" onclick="selectChip(this)">Efter middag</button>
+                  <button class="chip" onclick="selectChip(this)">Kväll</button>
+                  <button class="chip" onclick="selectChip(this)">När som helst</button>
+                </div>
+
+                <div class="step-nav">
+                  <button class="btn-secondary" onclick="goToHabitStep(1)">Tillbaka</button>
+                  <button class="btn-primary" onclick="goToHabitStep(3)">Nästa</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- ============ HABIT CREATION STEP 3: REMINDER ============ -->
+            <div class="screen" id="screen-habit-3">
+              <div class="screen-content">
+                <div class="top-bar">
+                  <button class="top-bar-back" onclick="goToHabitStep(2)" aria-label="Tillbaka">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+                  </button>
+                  <div class="top-bar-title">Skapa rutin</div>
+                  <div class="top-bar-spacer"></div>
+                </div>
+
+                <div class="step-progress">
+                  <div class="step-bar active"></div>
+                  <div class="step-bar active"></div>
+                  <div class="step-bar active"></div>
+                  <div class="step-bar"></div>
+                </div>
+
+                <div class="step-title">Vill du ha en påminnelse?</div>
+                <div class="step-subtitle">Påminnelsen är wellness, inte en klinisk uppgift. Du bestämmer ton och hur tjatig den får vara.</div>
+
+                <div class="toggle-row">
+                  <div>
+                    <div class="label">Påminn mig</div>
+                    <div class="sub">Notifikation 30 min innan vald tid</div>
+                  </div>
+                  <button class="toggle-switch on" onclick="this.classList.toggle('on')"></button>
+                </div>
+
+                <div class="chip-group-label">Tonalitet</div>
+                <div class="tonality-grid">
+                  <div class="tonality-card selected" onclick="selectTonality(this)">
+                    <div class="tonality-name">Neutral</div>
+                    <div class="tonality-example">"Dags att gå en promenad."</div>
+                  </div>
+                  <div class="tonality-card" onclick="selectTonality(this)">
+                    <div class="tonality-name">Uppmuntrande</div>
+                    <div class="tonality-example">"Ännu en promenad, du klarar det!"</div>
+                  </div>
+                  <div class="tonality-card" onclick="selectTonality(this)">
+                    <div class="tonality-name">Sakligt</div>
+                    <div class="tonality-example">"Promenad efter middagen 19:00."</div>
+                  </div>
+                  <div class="tonality-card" onclick="selectTonality(this)">
+                    <div class="tonality-name">Rakt på</div>
+                    <div class="tonality-example">"Skor på, ut nu."</div>
+                  </div>
+                </div>
+
+                <div class="chip-group-label">Om du missar — hur tjatig?</div>
+                <div class="tonality-grid">
+                  <div class="tonality-card" onclick="selectEscalation(this)">
+                    <div class="tonality-name">Lugn</div>
+                    <div class="tonality-example">Ingen ompåminnelse</div>
+                  </div>
+                  <div class="tonality-card selected" onclick="selectEscalation(this)">
+                    <div class="tonality-name">Vanlig</div>
+                    <div class="tonality-example">Påminn igen efter 15 min</div>
+                  </div>
+                  <div class="tonality-card" onclick="selectEscalation(this)">
+                    <div class="tonality-name">Påstridig</div>
+                    <div class="tonality-example">Var 15:e min i en timme</div>
+                  </div>
+                  <div class="tonality-card" onclick="selectEscalation(this)">
+                    <div class="tonality-name">Tjatig</div>
+                    <div class="tonality-example">Var 15:e min tills genomförd</div>
+                  </div>
+                </div>
+
+                <div class="step-nav">
+                  <button class="btn-secondary" onclick="goToHabitStep(2)">Tillbaka</button>
+                  <button class="btn-primary" onclick="goToHabitStep(4)">Nästa</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- ============ HABIT CREATION STEP 4: SUMMARY ============ -->
+            <div class="screen" id="screen-habit-4">
+              <div class="screen-content">
+                <div class="top-bar">
+                  <button class="top-bar-back" onclick="goToHabitStep(3)" aria-label="Tillbaka">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+                  </button>
+                  <div class="top-bar-title">Skapa rutin</div>
+                  <div class="top-bar-spacer"></div>
+                </div>
+
+                <div class="step-progress">
+                  <div class="step-bar active"></div>
+                  <div class="step-bar active"></div>
+                  <div class="step-bar active"></div>
+                  <div class="step-bar active"></div>
+                </div>
+
+                <div class="step-title">Sätt din rutin till verket</div>
+                <div class="step-subtitle">Granska och spara. Du kan ändra senare.</div>
+
+                <div class="summary-card">
+                  <div class="summary-row">
+                    <span class="key">Rutin</span>
+                    <span class="val">Promenad efter middagen</span>
+                  </div>
+                  <div class="summary-row">
+                    <span class="key">Frekvens</span>
+                    <span class="val">Varje dag</span>
+                  </div>
+                  <div class="summary-row">
+                    <span class="key">Tid</span>
+                    <span class="val">Efter middag</span>
+                  </div>
+                  <div class="summary-row">
+                    <span class="key">Påminnelse</span>
+                    <span class="val">På · Neutral</span>
+                  </div>
+                  <div class="summary-row">
+                    <span class="key">Eskalering</span>
+                    <span class="val">Vanlig</span>
+                  </div>
+                  <div class="summary-row">
+                    <span class="key">Kopplat mål</span>
+                    <span class="val">75 kg</span>
+                  </div>
+                </div>
+
+                <div class="step-nav">
+                  <button class="btn-secondary" onclick="goToHabitStep(3)">Tillbaka</button>
+                  <button class="btn-primary" onclick="saveHabit()">Spara rutin</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- ============ GOAL DETAIL ============ -->
+            <div class="screen" id="screen-goal">
+              <div class="goal-hero">
+                <div class="goal-hero-top">
+                  <button class="top-bar-back" onclick="goBack()" style="background: rgba(255,255,255,0.6);" aria-label="Tillbaka">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+                  </button>
+                  <button class="top-bar-action" style="background: rgba(255,255,255,0.6);" onclick="showToast('Redigera mål (kommande)')" aria-label="Redigera">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4z"/></svg>
+                  </button>
+                </div>
+                <div class="goal-hero-tag">Mitt viktmål</div>
+                <div class="goal-hero-numbers">
+                  <div>
+                    <div class="goal-hero-current">86,6</div>
+                    <span class="goal-hero-current-label">Nu (kg)</span>
+                  </div>
+                  <span class="goal-hero-arrow">→</span>
+                  <div>
+                    <div class="goal-hero-target">75</div>
+                    <span class="goal-hero-target-label">Mål (kg)</span>
+                  </div>
+                </div>
+                <div class="goal-progress-bar">
+                  <div class="goal-progress-fill" style="width: 23%;"></div>
+                </div>
+                <div class="goal-hero-context">
+                  <strong>2,4 kg ned, 11,6 kg kvar.</strong> I nuvarande takt når du målet om 18 veckor.
+                </div>
+              </div>
+
+              <div class="screen-content" style="padding-top: 0;">
+                <div class="forecast-card">
+                  <div class="forecast-head">
+                    <span class="forecast-title">Prognos</span>
+                    <span class="forecast-meta">Linjär trend</span>
+                  </div>
+                  <svg class="chart-svg" viewBox="0 0 320 110" preserveAspectRatio="none">
+                    <defs>
+                      <linearGradient id="goalG" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#D2022C" stop-opacity="0.2"/>
+                        <stop offset="100%" stop-color="#D2022C" stop-opacity="0"/>
+                      </linearGradient>
+                    </defs>
+                    <line x1="0" y1="25" x2="320" y2="25" stroke="#E6E6EA" stroke-width="1" stroke-dasharray="2 3"/>
+                    <line x1="0" y1="55" x2="320" y2="55" stroke="#E6E6EA" stroke-width="1" stroke-dasharray="2 3"/>
+                    <line x1="0" y1="92" x2="320" y2="92" stroke="#1F7A4D" stroke-width="1.5" stroke-dasharray="4 4" opacity="0.6"/>
+                    <text x="6" y="89" font-family="Inter" font-size="9" fill="#1F7A4D" font-weight="600" opacity="0.8">Mål 75 kg</text>
+                    <path d="M 0 22 L 30 26 L 60 30 L 90 35 L 120 40 L 150 45" stroke="#D2022C" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                    <path d="M 150 45 L 180 53 L 210 62 L 240 71 L 270 80 L 300 88 L 320 92" stroke="#D2022C" stroke-width="2.5" stroke-dasharray="4 4" fill="none" stroke-linecap="round" opacity="0.5"/>
+                    <circle cx="150" cy="45" r="4" fill="#D2022C"/>
+                    <circle cx="150" cy="45" r="9" fill="#D2022C" opacity="0.2"/>
+                    <circle cx="320" cy="92" r="4" fill="#1F7A4D"/>
+                  </svg>
+                  <div class="chart-watermark">
+                    <span class="via">via</span>
+                    <span class="friska-mark">Friska</span>
+                  </div>
+                </div>
+
+                <div class="linked-habits">
+                  <div class="section-h">
+                    <h2>Rutiner som hjälper dig dit</h2>
+                  </div>
+                  <div class="linked-habit-card">
+                    <div class="habit-icon-sm"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
+                    <div class="habit-body">
+                      <div class="habit-name">Registrera vikt</div>
+                      <div class="habit-time">Varje morgon</div>
+                    </div>
+                    <div class="linked-habit-streak">18 dagar</div>
+                  </div>
+                  <div class="linked-habit-card">
+                    <div class="habit-icon-sm"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg></div>
+                    <div class="habit-body">
+                      <div class="habit-name">Logga måltid</div>
+                      <div class="habit-time">Varje måltid</div>
+                    </div>
+                    <div class="linked-habit-streak">12 dagar</div>
+                  </div>
+                  <div class="linked-habit-card">
+                    <div class="habit-icon-sm"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h18M5 6h14a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2zM8 9v6M16 9v6"/></svg></div>
+                    <div class="habit-body">
+                      <div class="habit-name">Mät midjemått</div>
+                      <div class="habit-time">Varje söndag</div>
+                    </div>
+                    <div class="linked-habit-streak">3 veckor</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Tab bar with circular plus on right -->
+          <div class="tab-bar" id="tab-bar">
+            <button class="tab active" data-screen="screen-home">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3l9 8h-3v9h-4v-6h-4v6H6v-9H3z"/></svg>
+              <span>Hem</span>
+            </button>
+            <button class="tab" data-screen="screen-health">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h3l3-9 6 18 3-9h3"/></svg>
+              <span>Min hälsa</span>
+            </button>
+            <button class="tab" data-screen="screen-chats">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+              <span>Chattar</span>
+            </button>
+            <button class="tab" data-screen="screen-library">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2zM22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
+              <span>Bibliotek</span>
+            </button>
+            <button class="tab-plus" id="tab-plus" aria-label="Lägg till">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+            </button>
+          </div>
+
+          <!-- Plus speed dial -->
+          <div class="plus-options-wrap" id="plus-options">
+            <div class="plus-option">
+              <span class="plus-option-label">Streckkod</span>
+              <button class="plus-option-btn" aria-label="Streckkod">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5v14M7 5v14M11 5v10M11 17v2M15 5v14M19 5v14"/></svg>
+              </button>
+            </div>
+            <div class="plus-option">
+              <span class="plus-option-label">Röstlogg</span>
+              <button class="plus-option-btn" aria-label="Röstlogg">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0014 0M12 18v3"/></svg>
+              </button>
+            </div>
+            <div class="plus-option">
+              <span class="plus-option-label">Kamera · AI</span>
+              <button class="plus-option-btn" aria-label="Kamera AI">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
+              </button>
+            </div>
+          </div>
+          <div class="plus-backdrop" id="plus-backdrop"></div>
+
+          <!-- Inbox sheet -->
+          <div class="inbox-sheet-overlay" id="inbox-overlay"></div>
+          <div class="inbox-sheet" id="inbox-sheet">
+            <div class="screen-content">
+              <div class="top-bar" style="padding-top: 16px;">
+                <button class="top-bar-back" onclick="closeInboxSheet()" aria-label="Stäng">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 6l12 12M18 6l-12 12"/></svg>
+                </button>
+                <div class="top-bar-title">Inbox</div>
+                <div class="top-bar-spacer"></div>
+              </div>
+              <div style="margin-top: 8px;">
+                <div class="inbox-row unread">
+                  <div class="inbox-icon suggested">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2 5 5 .5-4 3.5 1.5 5L12 13.5 7.5 16l1.5-5L5 7.5l5-.5z"/></svg>
+                  </div>
+                  <div class="inbox-body">
+                    <div class="inbox-row-head">
+                      <span class="inbox-from">Anna föreslår</span>
+                      <span class="inbox-time">10:14</span>
+                    </div>
+                    <div class="inbox-title">Promenad efter middagen</div>
+                    <div class="inbox-preview">"Eftersom dina blodtryckstoppar kommer på kvällen, prova att gå 10 min efter middagen några dagar i veckan."</div>
+                    <div class="inbox-actions">
+                      <button class="inbox-action-btn primary" onclick="acceptSuggestion(this)">Lägg till som rutin</button>
+                      <button class="inbox-action-btn secondary">Inte nu</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="inbox-row unread" onclick="closeInboxSheet(); setTimeout(() => openChatDoctor(), 300);">
+                  <div class="inbox-icon lab">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v6L4 22h16L15 8V2M9 2h6"/></svg>
+                  </div>
+                  <div class="inbox-body">
+                    <div class="inbox-row-head">
+                      <span class="inbox-from">Dr. Magnus Berg</span>
+                      <span class="inbox-time">10:30</span>
+                    </div>
+                    <div class="inbox-title">Artikel om GLP-1 delad</div>
+                    <div class="inbox-preview">Läkaren har delat en artikel i chatten med dig.</div>
+                  </div>
+                </div>
+                <div class="inbox-row">
+                  <div class="inbox-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V6a2 2 0 012-2z"/></svg>
+                  </div>
+                  <div class="inbox-body">
+                    <div class="inbox-row-head">
+                      <span class="inbox-from">Bokning</span>
+                      <span class="inbox-time">Mån</span>
+                    </div>
+                    <div class="inbox-title">Påminnelse: Kontroll 5 maj</div>
+                    <div class="inbox-preview">Check-in med Anna Lindqvist via chatt under dagen.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Toast -->
+          <div class="toast" id="toast">
+            <div class="toast-icon">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>
+            </div>
+            <div class="toast-text" id="toast-text">Sparat</div>
+          </div>
+
+          <div class="home-indicator"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const screensStack = document.querySelector('.screens-stack');
+const initialScreensHTML = screensStack.innerHTML;
+let history = ['screen-home'];
+
+function showScreen(id, opts = {}) {
+  const current = document.querySelector('.screen.active');
+  const next = document.getElementById(id);
+  if (!next || current === next) return;
+  if (current) {
+    current.classList.remove('active');
+    current.classList.add('exiting');
+    setTimeout(() => current.classList.remove('exiting'), 300);
+  }
+  next.classList.add('active');
+  if (!opts.noHistory) history.push(id);
+  updateTabBar(id);
+
+  const tabBar = document.getElementById('tab-bar');
+  const plusOpts = document.getElementById('plus-options');
+  if (id === 'screen-chat-nurse' || id === 'screen-chat-ai' || id === 'screen-chat-doctor') {
+    tabBar.style.display = 'none';
+    plusOpts.style.display = 'none';
+  } else {
+    tabBar.style.display = 'flex';
+    plusOpts.style.display = 'flex';
+  }
+}
+
+function goBack() {
+  if (history.length > 1) {
+    history.pop();
+    showScreen(history[history.length - 1], { noHistory: true });
+  } else {
+    showScreen('screen-home', { noHistory: true });
+  }
+}
+
+function updateTabBar(screenId) {
+  const tabMap = {
+    'screen-home': 'screen-home',
+    'screen-habit-1': 'screen-home',
+    'screen-habit-2': 'screen-home',
+    'screen-habit-3': 'screen-home',
+    'screen-habit-4': 'screen-home',
+    'screen-goal': 'screen-home',
+    'screen-health': 'screen-health',
+    'screen-chats': 'screen-chats',
+    'screen-chat-nurse': 'screen-chats',
+    'screen-chat-doctor': 'screen-chats',
+    'screen-chat-ai': 'screen-chats',
+    'screen-library': 'screen-library',
+    'screen-program': 'screen-library',
+    'screen-article': 'screen-library',
+  };
+  const target = tabMap[screenId];
+  document.querySelectorAll('.tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.screen === target);
+  });
+}
+
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    const target = tab.dataset.screen;
+    if (target) {
+      history = [target];
+      showScreen(target, { noHistory: true });
+    }
+  });
+});
+
+// Plus speed dial
+const plusBtn = document.getElementById('tab-plus');
+const plusOptions = document.getElementById('plus-options');
+const plusBackdrop = document.getElementById('plus-backdrop');
+plusBtn.addEventListener('click', (e) => {
+  e.stopPropagation();
+  const isOpen = plusBtn.classList.toggle('open');
+  plusOptions.classList.toggle('open', isOpen);
+  plusBackdrop.classList.toggle('active', isOpen);
+});
+plusBackdrop.addEventListener('click', () => {
+  plusBtn.classList.remove('open');
+  plusOptions.classList.remove('open');
+  plusBackdrop.classList.remove('active');
+});
+plusOptions.querySelectorAll('.plus-option-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    setTimeout(() => {
+      plusBtn.classList.remove('open');
+      plusOptions.classList.remove('open');
+      plusBackdrop.classList.remove('active');
+    }, 150);
+  });
+});
+
+// Inbox sheet
+function openInboxSheet() {
+  document.getElementById('inbox-overlay').classList.add('active');
+  document.getElementById('inbox-sheet').classList.add('active');
+}
+function closeInboxSheet() {
+  document.getElementById('inbox-overlay').classList.remove('active');
+  document.getElementById('inbox-sheet').classList.remove('active');
+}
+document.getElementById('inbox-overlay').addEventListener('click', closeInboxSheet);
+
+// Flow handlers
+function openUpgrade() { showScreen('screen-upgrade'); }
+function completeUpgrade() {
+  showToast('Behandling aktiverad!');
+  setTimeout(() => showScreen('screen-upgrade-confirm'), 600);
+}
+function finishUpgrade() {
+  history = ['screen-home'];
+  showScreen('screen-home', { noHistory: true });
+}
+function openProgram() { showScreen('screen-program'); }
+function openArticle() { showScreen('screen-article'); }
+function markArticleDone() {
+  showToast('Markerad som läst. Bra jobbat!');
+  setTimeout(goBack, 600);
+}
+function openAIChat() { showScreen('screen-chat-ai'); }
+function openChatNurse() { showScreen('screen-chat-nurse'); }
+function openChatDoctor() { showScreen('screen-chat-doctor'); }
+
+// Habit creation flow
+function openCreateHabit() { showScreen('screen-habit-1'); }
+function closeCreateHabit() {
+  history = ['screen-home'];
+  showScreen('screen-home', { noHistory: true });
+}
+function goToHabitStep(step) {
+  showScreen('screen-habit-' + step);
+}
+function selectTemplate(card) {
+  const list = card.closest('.template-list');
+  list.querySelectorAll('.template-card').forEach(c => c.classList.remove('selected'));
+  card.classList.add('selected');
+}
+function selectChip(chip) {
+  const row = chip.closest('.chip-row');
+  row.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
+  chip.classList.add('selected');
+}
+function selectDay(day) {
+  day.classList.toggle('selected');
+}
+function selectTonality(card) {
+  // First tonality grid (tonalitet) — find the closest grid
+  const grid = card.closest('.tonality-grid');
+  grid.querySelectorAll('.tonality-card').forEach(c => c.classList.remove('selected'));
+  card.classList.add('selected');
+}
+function selectEscalation(card) {
+  selectTonality(card);
+}
+function saveHabit() {
+  showToast('Rutin sparad. Hittas på Hem.');
+  setTimeout(() => {
+    history = ['screen-home'];
+    showScreen('screen-home', { noHistory: true });
+  }, 600);
+}
+
+// Goal detail
+function openGoalDetail() { showScreen('screen-goal'); }
+
+function acceptSuggestion(btn) {
+  const row = btn.closest('.inbox-row');
+  row.style.transition = 'opacity 0.4s, transform 0.4s';
+  row.style.opacity = '0.5';
+  row.style.transform = 'scale(0.96)';
+  showToast('Tillagd som rutin. Hittas på Hem.');
+  setTimeout(() => {
+    row.style.display = 'none';
+    const badge = document.getElementById('inbox-badge');
+    let n = parseInt(badge.textContent) - 1;
+    if (n <= 0) badge.style.display = 'none';
+    else badge.textContent = n;
+  }, 800);
+}
+
+let toastTimer;
+function showToast(text) {
+  const toast = document.getElementById('toast');
+  document.getElementById('toast-text').textContent = text;
+  toast.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove('show'), 2200);
+}
+
+// Reset
+function resetPrototype() {
+  screensStack.innerHTML = initialScreensHTML;
+  history = ['screen-home'];
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active', 'exiting'));
+  document.getElementById('screen-home').classList.add('active');
+  updateTabBar('screen-home');
+  closeInboxSheet();
+  plusBtn.classList.remove('open');
+  plusOptions.classList.remove('open');
+  plusBackdrop.classList.remove('active');
+  document.getElementById('toast').classList.remove('show');
+  document.querySelectorAll('.flow-pill').forEach(x => x.classList.remove('active'));
+  document.querySelector('.flow-pill[data-flow="all"]').classList.add('active');
+  showToast('Prototypen återställd');
+}
+document.getElementById('reset-btn').addEventListener('click', resetPrototype);
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'r' && !e.metaKey && !e.ctrlKey && document.activeElement.tagName !== 'INPUT') {
+    resetPrototype();
+  }
+});
+
+// Flow pills
+document.querySelectorAll('.flow-pill').forEach(p => {
+  p.addEventListener('click', () => {
+    document.querySelectorAll('.flow-pill').forEach(x => x.classList.remove('active'));
+    p.classList.add('active');
+    const flow = p.dataset.flow;
+    screensStack.innerHTML = initialScreensHTML;
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active', 'exiting'));
+    history = ['screen-home'];
+
+    if (flow === 'upgrade') {
+      document.getElementById('screen-home').classList.add('active');
+      updateTabBar('screen-home');
+      setTimeout(() => {
+        const upgradeEl = document.querySelector('#screen-home .upgrade-hero');
+        if (upgradeEl) upgradeEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 400);
+    } else if (flow === 'article') {
+      document.getElementById('screen-library').classList.add('active');
+      updateTabBar('screen-library');
+      history = ['screen-library'];
+    } else if (flow === 'ai-chat') {
+      document.getElementById('screen-home').classList.add('active');
+      updateTabBar('screen-home');
+      setTimeout(() => {
+        const insightEl = document.querySelector('#screen-home .insight-card');
+        if (insightEl) insightEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 400);
+    } else if (flow === 'content-link') {
+      document.getElementById('screen-chats').classList.add('active');
+      updateTabBar('screen-chats');
+      history = ['screen-chats'];
+    } else if (flow === 'create-habit') {
+      document.getElementById('screen-home').classList.add('active');
+      updateTabBar('screen-home');
+      setTimeout(() => openCreateHabit(), 300);
+    } else if (flow === 'goal') {
+      document.getElementById('screen-home').classList.add('active');
+      updateTabBar('screen-home');
+      setTimeout(() => openGoalDetail(), 300);
+    } else {
+      document.getElementById('screen-home').classList.add('active');
+      updateTabBar('screen-home');
+    }
+  });
+});
+</script>
+</body>
+</html>
